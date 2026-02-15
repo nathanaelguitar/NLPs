@@ -91,6 +91,30 @@ This module evaluates how well LDA topic groupings align with GICS (Global Indus
 
 ---
 
+## Supporting Scripts
+
+### Base.py
+Course-provided helper module for Module 3.2 analysis:
+
+**Functions:**
+- `getDescriptions()` - Load and prepare company data with GICS codes
+- `getEmbeddings()` - Infer topic probabilities and create full embeddings DataFrame
+- `gettopicnames()` - Extract human-readable topic names from top words
+- `getldaIndGrpClean()` - Load the trained 24-topic LDA model
+
+**Prerequisites:**
+- `longD_unit2.p` - Pickled DataFrame with Middle 1000 company descriptions
+- `ldaIndGrpCleanFinal.mdl` - Trained tomotopy LDA model (24 topics)
+
+**Key Features:**
+- Filters companies to those with valid GICS codes and sufficient text (>5 words)
+- Sorts by market cap (largest to smallest) for analysis priority
+- Adds GICS industry group names for 24 standard groups
+- Performs hard assignment to dominant topic using `idxmax()`
+- Creates interpretable topic names from top 5 words
+
+---
+
 ## Key Insights: LDA vs Traditional Classification (GICS)
 
 LDA provides a **bottom-up, text-driven classification** that often cuts across GICS boundaries, revealing economically meaningful clusters that fixed taxonomies miss. 
@@ -197,8 +221,17 @@ validate_model(model, coherence_score=0.45,
                output_prefix="my_analysis")
 ```
 
-## Setup
+### 4. `gics_alignment_analysis.py`
+Implementation script for Module 3.2 GICS-LDA alignment analysis:
+- **Topic probability inference**: Generate 24-topic embeddings for companies
+- **Hard assignment**: Assign each company to dominant topic
+- **Bidirectional cross-tabulation**: GICS→LDA and LDA→GICS
+- **Market cap weighting**: Analyze how alignment varies by company size
+- **Coherence analysis**: Measure thematic consistency within groups
 
+Requires: `longD_unit2.p` (company data) and `ldaIndGrpCleanFinal.mdl` (trained model)
+
+## Setup
 ```bash
 python3 -m venv venv
 source venv/bin/activate
