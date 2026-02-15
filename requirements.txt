@@ -1,0 +1,9 @@
+matplotlib
+wordcloud
+tomotopy
+gensim
+pyLDAvis
+numpy
+scipy
+pandas
+scikit-learn
