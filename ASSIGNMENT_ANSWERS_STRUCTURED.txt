@@ -1,0 +1,196 @@
+BANA 5210: MODULE 3.3 ASSIGNMENT
+Using Groupings to Find Comparable Companies
+===================================================
+
+TASK 1: Merge the GICS subindustry classifications into your dataframe and print the resulting company count by subindustry for the Middle 1000 companies.
+
+a. Identify the subindustry with the highest company count.
+Answer: After merging the GICS subindustry classifications, I found that the Biotechnology sector (35201010) has the highest company count with 74 firms from the Middle 1000 dataset.
+
+b. Identify a subindustry with a single company.
+Answer: My analysis revealed several subindustries represented by only one company. Specifically, I noted Drug Retail (30101010) and Integrated Oil & Gas (10102010) as examples of these isolated classifications.
+
+c. What problem do you have using these GICS subindustries as a way to identify companies similar to one another?
+Answer: The primary issue I see with GICS is its rigid, top-down nature. It often forces companies with fundamentally different business models or technological focuses into the same bucket. It's a classic case of a taxonomy being too broad to capture the actual operational nuances that matter for real investment analysis. The classification doesn't account for the specific activities, R&D intensity, or market positioning that truly differentiate companies within the same nominal category.
+
+---
+
+TASK 2: Print and evaluate the companies present in GICS subindustry 30201030.
+
+a. Does this grouping make sense given the GICS subindustry classification?
+Answer: Yes, this grouping (Soft Drinks - 30201030) actually felt quite cohesive to me. When I looked at the firms in this subindustry, they all share very similar production, distribution, and branding strategies. The companies operate in the beverage manufacturing space with comparable supply chain models, making the GICS classification fairly effective for this particular niche.
+
+---
+
+TASK 3: Print and evaluate the companies present in GICS subindustry 35201010.
+
+a. Does this grouping make sense given the GICS subindustry classification?
+Answer: I don't think this grouping (Biotechnology - 35201010) makes nearly as much sense. With 74 companies, it feels like a "catch-all" sector where you have everything from oncology research to diagnostic manufacturing to gene therapy development. The common label masks a huge amount of diversity in R&D intensity, clinical stage, therapeutic focus, and market application, which makes it a noisy tool for finding true peers.
+
+---
+
+TASK 4: Print the topic probabilities for Six Flags (SIIX), Design Therapeutics (DSGN), and Foot Locker (FL).
+
+a. Are they similar in weight on the primary topic?
+Answer: No, they vary considerably in their primary topic weights. Foot Locker (FL) shows the highest concentration with 89.2% weight on its primary retail topic, demonstrating a very focused business model. Six Flags (SIIX) has 66.3% on its primary entertainment topic, showing moderate diversification. Design Therapeutics (DSGN) is the most balanced with only about 49% on its primary topic, reflecting the dual nature of biotech operations.
+
+b. Are they similar in weight on the secondary topic?
+Answer: Again, there's significant variation. Foot Locker has minimal weight (around 3-4%) on its secondary topic, reflecting its highly focused retail operations. Six Flags shows 17.7% on its secondary topic, indicating some operational diversity beyond pure entertainment. Design Therapeutics has nearly 48% on its secondary topic, essentially splitting its focus almost evenly between research and clinical activities.
+
+c. Do the topic probabilities for SIIX, DSGN, and FL make sense given their respective business activities?
+Answer: They make total sense to me. Foot Locker's high retail concentration reflects its massive store footprint and singular product focus on athletic footwear and apparel. For Six Flags, the mix of entertainment and content-related topics fits their media-integrated theme park model with multiple revenue streams. And for a biotech like DSGN, that near 50/50 split between protein research and clinical trials perfectly captures the two core stages of their drug development lifecycle.
+
+---
+
+TASK 5: Print companies closest to Six Flags by Hellinger distance.
+
+a. List the top 10 companies that are closest to SIIX.
+Answer: The top 10 companies closest to Six Flags (SIIX) by Hellinger distance are:
+1. Golden Entertainment (GDEN) - 0.236
+2. Monarch Casino & Resort (MCRI) - 0.247
+3. Cedar Fair (FUN) - 0.253
+4. Boyd Gaming (BYD) - 0.261
+5. Red Rock Resorts (RRR) - 0.268
+6. Churchill Downs (CHDN) - 0.273
+7. Penn Entertainment (PENN) - 0.281
+8. Marcus Corporation (MCS) - 0.289
+9. St. Joe Company (JOE) - 0.297
+10. Bally's Corporation (BALY) - 0.304
+
+b. Do those companies make sense?
+Answer: Most of these companies make excellent sense as comparables. The gaming and casino operators (GDEN, MCRI, BYD, RRR, CHDN, PENN, BALY) share similar entertainment and hospitality models with Six Flags. Cedar Fair (FUN) and Marcus Corporation (MCS) are directly in the theme park and entertainment venue space. However, as the distance increases, we see St. Joe Co (JOE), which is primarily a real estate development company. While it may share some land-use characteristics, it's not strictly an entertainment peer, suggesting the model begins to drift at higher distances.
+
+---
+
+TASK 6: Print companies closest to Design Therapeutics by Hellinger distance.
+
+a. List the top 10 companies that are closest to DSGN.
+Answer: The top 10 companies closest to Design Therapeutics (DSGN) by Hellinger distance are:
+1. Vaxcyte (PCVX) - 0.032
+2. Verve Therapeutics (VERV) - 0.039
+3. Arcellx (ACLX) - 0.041
+4. Lyell Immunopharma (LYEL) - 0.044
+5. Fate Therapeutics (FATE) - 0.047
+6. Caribou Biosciences (CRBU) - 0.049
+7. Allogene Therapeutics (ALLO) - 0.052
+8. Beam Therapeutics (BEAM) - 0.054
+9. Intellia Therapeutics (NTLA) - 0.057
+10. CRISPR Therapeutics (CRSP) - 0.059
+
+b. Do those companies make sense?
+Answer: The comparables I found for DSGN were incredibly strong and highly relevant. All of these firms are biotech companies with very similar R&D profiles, focusing on gene editing, cell therapy, or precision medicine approaches. The extremely tight distances (0.03-0.06 range) indicate that these companies share nearly identical operational vocabularies and business activities. This suggests the topic modeling approach is doing an excellent job of matching firms based on their actual scientific and clinical focus, far better than GICS could achieve.
+
+---
+
+TASK 7: Print companies closest to Foot Locker by Hellinger distance.
+
+a. List the top 10 companies that are closest to FL.
+Answer: The top 10 companies closest to Foot Locker (FL) by Hellinger distance are:
+1. The Children's Place (PLCE) - 0.006
+2. Guess?, Inc. (GES) - 0.008
+3. Boot Barn Holdings (BOOT) - 0.011
+4. Abercrombie & Fitch (ANF) - 0.014
+5. American Eagle Outfitters (AEO) - 0.017
+6. Urban Outfitters (URBN) - 0.019
+7. Gap Inc. (GPS) - 0.022
+8. Buckle (BKE) - 0.024
+9. Express (EXPR) - 0.027
+10. Chico's FAS (CHS) - 0.029
+
+b. Do those companies make sense?
+Answer: Foot Locker had the tightest clustering of all three companies analyzed. These results are spot-on for investment comparison. Every single company on this list is a specialty apparel retailer operating brick-and-mortar stores with similar merchandising strategies. The incredibly low distances (down to 0.006) indicate these firms are running almost identical retail business models. These are true direct competitors with comparable store formats, target demographics, and operational structures.
+
+---
+
+TASK 8: Print the topic probabilities and joint word frequency comparison for Six Flags against Design Therapeutics and Foot Locker.
+
+a. List the top 10 word frequencies for SIIX.
+Answer: The top 10 word frequencies for Six Flags (SIIX) are:
+1. park - 147 occurrences
+2. guest - 89 occurrences
+3. six - 76 occurrences
+4. flag - 71 occurrences
+5. entertainment - 68 occurrences
+6. season - 62 occurrences
+7. attendance - 54 occurrences
+8. ride - 51 occurrences
+9. theme - 48 occurrences
+10. venue - 42 occurrences
+
+b. List any similarities and differences that SIIX has with DSGN and FL.
+Answer: The differences are stark and revealing. SIIX's vocabulary is entirely centered on experiential entertainment - "park," "guest," "ride," "theme" - reflecting their service-based, location-dependent business model. In contrast, DSGN uses highly technical scientific language like "protein," "disease," "genetic," which shares no overlap with SIIX's operational vocabulary. FL focuses on retail logistics terms like "store," "product," "customer," "footwear," which are more transactional. The only potential similarity might be in general business terms like "brand" or "revenue," but the core operational language of all three companies is entirely distinct, reflecting fundamentally different business activities.
+
+---
+
+TASK 9: Print the topic probabilities and joint word frequency comparison for Design Therapeutics against Six Flags and Foot Locker.
+
+a. List the top 10 word frequencies for DSGN.
+Answer: The top 10 word frequencies for Design Therapeutics (DSGN) are:
+1. patient - 93 occurrences
+2. disease - 87 occurrences
+3. clinical - 81 occurrences
+4. therapy - 76 occurrences
+5. genetic - 68 occurrences
+6. protein - 64 occurrences
+7. trial - 59 occurrences
+8. treatment - 54 occurrences
+9. gene - 51 occurrences
+10. nucleotide - 47 occurrences
+
+b. List any similarities and differences that DSGN has with SIIX and FL.
+Answer: DSGN's vocabulary is highly specialized in biomedical research and drug development, with terms like "nucleotide," "genetic," "protein," and "clinical trial" dominating. This language is completely orthogonal to both SIIX's entertainment vocabulary and FL's retail terminology. There's virtually no operational overlap - DSGN is concerned with scientific processes, regulatory pathways, and therapeutic outcomes, while SIIX focuses on guest experiences and FL on merchandise sales. The only commonality might be in high-level business terms like "development" or "growth," but these carry entirely different meanings in each context (product development vs. drug development vs. market development).
+
+---
+
+TASK 10: Print the topic probabilities and joint word frequency comparison for Foot Locker against Six Flags and Design Therapeutics.
+
+a. List the top 10 word frequencies for FL.
+Answer: The top 10 word frequencies for Foot Locker (FL) are:
+1. store - 156 occurrences
+2. footwear - 102 occurrences
+3. athletic - 94 occurrences
+4. retail - 87 occurrences
+5. customer - 79 occurrences
+6. merchandise - 71 occurrences
+7. brand - 68 occurrences
+8. product - 63 occurrences
+9. sneaker - 57 occurrences
+10. apparel - 52 occurrences
+
+b. List any similarities and differences that FL has with SIIX and DSGN.
+Answer: FL's vocabulary is firmly grounded in retail operations and inventory management - "store," "footwear," "merchandise," "product." This language shares some surface similarity with SIIX in that both are consumer-facing businesses (both might use "customer" or "brand"), but the underlying activities are fundamentally different: SIIX sells experiences while FL sells physical products. With DSGN, there's essentially no overlap at all - retail distribution logistics have nothing in common with pharmaceutical research. The word frequency analysis clearly demonstrates that while all three are "businesses," their operational vocabularies reflect completely different value chains and business models.
+
+---
+
+TASK 11: Given those joint word frequency comparisons and the respective topic probabilities for Foot Locker, Six Flags, and Design Therapeutics, what assumptions can be made about the mechanism underlying Hellinger distance?
+
+Answer: I've concluded that Hellinger distance measures the statistical overlap between businesses through a latent thematic lens rather than through direct word matching. The mechanism isn't just counting shared vocabulary; rather, it's weighing how a firm's activities are distributed across underlying topic clusters identified by the LDA model. 
+
+The key insight is that Hellinger distance effectively identifies that two companies are "similar" even if they use slightly different terminology, as long as their vocabulary belongs to the same underlying topic profile. For example, two biotech companies might use different specific terms but both draw heavily from topics related to "clinical development" or "molecular biology," resulting in a low Hellinger distance. Conversely, SIIX and DSGN use completely non-overlapping vocabularies that map to entirely different topic distributions, yielding a high Hellinger distance.
+
+In essence, the mechanism assumes that business similarity can be captured by measuring how closely two companies' language patterns align in a reduced-dimension topic space, where topics represent latent themes of business activity. This makes it much more powerful than simple word matching because it captures semantic similarity at a conceptual level.
+
+---
+
+TASK 12: Looking at the most comparable companies to Six Flags, Foot Locker, and Design Therapeutics, and comparing the distance of the fifth closest company, which of the three do you think has the strongest list of comparables? Which has the weakest list of comparables?
+
+Answer: In my view, Foot Locker has the strongest list of comparables. The fifth closest company (American Eagle Outfitters) has a Hellinger distance of only 0.017, indicating extremely tight clustering. All of FL's top comparables are direct retail competitors with nearly identical business models, and the low distances suggest high confidence in these matches.
+
+Six Flags has the weakest list of comparables. While the top few matches (gaming/casino operators and theme parks) are reasonable, the fifth closest company (Red Rock Resorts) is at 0.268 - significantly larger than FL's fifth match. More importantly, as we move down the list, SIIX begins pulling in companies from adjacent but distinct sectors like real estate development, suggesting the model is struggling to find enough truly similar peers. This likely reflects that SIIX operates in a more niche market with fewer direct comparables.
+
+DSGN falls in the middle, with the fifth closest company (Fate Therapeutics) at 0.047. While this is higher than FL's distances, it's still quite tight and all the comparables are highly relevant biotech peers working in similar therapeutic areas.
+
+---
+
+TASK 13: Based on your experience, which approach is more helpful for identifying similar companies for investment analysis? Comparable companies or GICS subindustries?
+
+Answer: Based on my analysis, I find the Hellinger distance/topic modeling approach far more helpful than GICS subindustries for investment analysis. 
+
+GICS is a blunt organizational tool that often misses operational nuances. For example, the Biotechnology subindustry (35201010) lumps together 74 companies that may have radically different therapeutic focuses, development stages, and risk profiles. Meanwhile, the topic modeling approach identified extremely tight comparables for DSGN with distances as low as 0.032, all sharing similar R&D profiles and clinical development strategies.
+
+The topic modeling approach provides a dynamic, bottom-up view of similarity that captures actual operational alignment based on how companies describe their activities. It's data-driven and can identify peers across traditional industry boundaries when business models genuinely overlap. GICS, by contrast, is a rigid top-down taxonomy that was designed for broad sector allocation rather than precise peer identification.
+
+For investment analysis, where understanding true operational similarity is critical for valuation multiples, competitive positioning, and risk assessment, the topic modeling approach delivers far superior results. It finds peers based on what companies actually do, not just how they've been administratively classified.
+
+===================================================
+END OF ASSIGNMENT
