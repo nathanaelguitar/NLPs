@@ -13,6 +13,84 @@ This repository documents my journey learning Natural Language Processing, with 
 
 **Key Learning:** *"Clean text determines meaningful topics."* Most NLP performance comes from preprocessing, not fancy algorithms.
 
+---
+
+## Module 3.2: LDA Topic Modeling and GICS Industry Alignment
+
+### Overview
+
+This module evaluates how well LDA topic groupings align with GICS (Global Industry Classification Standard) industry groups using the Middle 1000 companies by market capitalization. The trained model has 24 topics, and the core workflow involves: inferring topic probabilities for each company, assigning each to its highest-probability topic, then cross-tabulating LDA topics against GICS groups bidirectionally.
+
+### Key Workflow Steps
+
+**1. Infer Topic Probabilities (Embeddings)**
+- Convert each company's cleaned description into a 24-element probability vector
+- Each element represents alignment strength with a specific topic
+- Output: Soft assignments showing how companies distribute across topics
+
+**2. Hard Assignment to Dominant Topic**
+- Use `idxmax()` to assign each company to its highest-probability topic
+- Creates winner-take-all classifications while preserving soft probabilities
+- Example: Company with `topic12=0.88` assigned to topic12
+
+**3. Topic Naming from Top Words**
+- Extract top 5-10 words per topic using `get_topic_words()`
+- Create human-readable names (e.g., `loan_bank_banking_deposit_lending_`)
+- Topic numbers are arbitrary; names identify actual content
+
+**4. Cross-Tabulation Analysis (Two Directions)**
+
+**GICS → LDA:** How thematically coherent is each GICS group?
+- **High consistency**: Utilities (96.2%), Insurance (95.0%), Banks (91.8%)
+- **Moderate consistency**: Semiconductors (81.2%), Autos (71.4%)
+- **Low consistency**: Consumer Services (33.3%), Software (35.4%)
+
+**LDA → GICS:** Does each topic correspond to single or multiple industries?
+- **Pure topics**: Some pharma topics are 100% Pharmaceuticals
+- **Focused topics**: Energy topic is 88.9% Energy sector
+- **Mixed topics**: Semiconductor topic spans Tech Hardware (45.2%) + Semiconductors (31.0%)
+
+**5. Market Capitalization Analysis**
+- **GICS market cap**: Hard assignment (each company in one group)
+- **LDA market cap**: Soft assignment weighted by topic probabilities
+- Reveals that companies straddle multiple themes economically
+
+### Key Findings
+
+**1. Alignment Patterns by Industry Type:**
+- **Strong alignment**: Specialized industries (Banks, Utilities, Insurance) have distinctive vocabulary
+- **Weak alignment**: Diversified services (Software, Consumer Services) scatter across topics
+- **Sub-structure splitting**: Pharma fragments into clinical trials, oncology, testing—more granular than GICS
+
+**2. Cross-Industry Clusters Are Real:**
+- Topic12 (semiconductor/component/device) legitimately spans Tech Hardware + Semiconductors
+- Reflects genuine functional similarity in business activities and language
+
+**3. Sample Size Effects:**
+- Small groups (Food & Staples: 8 companies, Telecom: 10) produce less stable assignments
+- Large groups (Capital Goods: 106, Software: 79) show clearer patterns
+
+**4. What This Reveals:**
+- **LDA captures vocabulary, not classification** - groups by self-description, not official category
+- **Topic splitting reveals hidden structure** - finds meaningful sub-segments within GICS groups
+- **Cross-GICS topics are informative** - show where industry boundaries blur operationally
+
+### Practical Implications
+
+**When LDA outperforms GICS:**
+- Discovering sub-industries within broad categories
+- Finding cross-industry functional clusters
+- Identifying companies that don't fit their GICS classification
+
+**When GICS outperforms LDA:**
+- Need for standardization across studies
+- Regulatory and investor communication
+- Historical comparability
+
+**Optimal approach:** Use LDA for discovery and pattern detection, then map insights to GICS for practical application and communication.
+
+---
+
 ## Key Insights: LDA vs Traditional Classification (GICS)
 
 LDA provides a **bottom-up, text-driven classification** that often cuts across GICS boundaries, revealing economically meaningful clusters that fixed taxonomies miss. 
@@ -96,7 +174,8 @@ Comprehensive Jupyter notebook covering:
 - Module 1.4: Stopwords & frequency analysis
 - Module 1.5: Topic modeling experiments
 - Module 2.1: Regex text cleaning
-- **NEW:** Module 1.6: LDA validation and quantitative analysis
+- Module 3.2: LDA and GICS industry alignment analysis
+- **Validation Module**: Quantitative topic validation with term-topic assignments and separation metrics
 
 Uses the 20 Newsgroups dataset to demonstrate the complete NLP pipeline including validation.
 
