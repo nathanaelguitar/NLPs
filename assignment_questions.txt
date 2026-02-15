@@ -1,0 +1,66 @@
+Module 3.3 Assignment
+Using Groupings to Find  Comparable Companies
+Instructions
+Use the Codio embed on the Module 3.3 Assignment page in Canvas to build lists of comparable companies, using GICS subindustry groupings first and then Hellinger distance from a single company to evaluate their comparative efficacy mapping similarities relevant to the business activities of the Middle 1000 companies. Once you have achieved all tasks in Codio, answer the questions present in the “Assignment Tasks” section of this document.
+Except as indicated, use this document to record responses to any questions. At a minimum, you will need to turn in a digital copy of this document to your instructor as part of your assignment completion, although there may be additional supporting documents that you need to submit. 
+Note: Though your work will only be seen by those grading the course and will not be used or shared outside the course, you should take care to obscure any information you feel might be of a sensitive or confidential nature.
+Submit this document on the Module 3.3 Assignment page in Canvas. Information about the grading rubric is available on that same page. Do not hesitate to contact your instructor if you have any questions about the assignment.
+
+Assignment Tasks
+Once you have addressed all the deliverables present in Codio for this assignment, provide solutions for any questions associated with those tasks below.
+	•	Merge the GICS subindustry classifications into your dataframe and print the resulting company count by subindustry for the Middle 1000 companies.
+	•	Identify the subindustry with the highest company count.
+Answer: Input here….
+	•	Identify a subindustry with a single company.
+Answer: Input here….
+	•	What problem do you have using these GICS subindustries as a way to identify companies similar to one another?
+Answer: Input here….
+	•	Print and evaluate the companies present in GICS subindustry 30201030.
+	•	Does this grouping make sense given the GICS subindustry classification?
+Answer: Input here….
+	•	Print and evaluate the companies present in GICS subindustry 35201010.
+	•	Does this grouping make sense given the GICS subindustry classification?
+Answer: Input here….
+	•	Print the topic probabilities for Six Flags SIIX, Design Therapeutics DSGN, and Foot Locker FL.
+	•	Are they similar in weight on the primary topic?
+Answer: Input here….
+	•	Are they similar in weight on the secondary topic?
+Answer: Input here….
+	•	Do the topic probabilities for SIIX, DSGN, and FL make sense given their respective business activities?
+Answer: Input here….
+	•	Print companies closest to Six Flags by Hellinger distance.
+	•	List the top 10 companies that are closest to SIIX.
+Answer: Input here….
+	•	Do those companies make sense?
+Answer: Input here….
+	•	Print companies closest to Design Therapeutics by Hellinger distance.
+	•	List the top 10 companies that are closest to DSGN.
+Answer: Input here….
+	•	Do those companies make sense?
+Answer: Input here….
+	•	Print companies closest to Foot Locker by Hellinger distance.
+	•	List the top 10 companies that are closest to FL.
+Answer: Input here….
+	•	Do those companies make sense?
+Answer: Input here….
+	•	Print the topic probabilities and joint word frequency comparison for Six Flags against Design Therapeutics and Foot Locker.
+	•	List the top 10 word frequencies for SIIX.
+Answer: Input here….
+	•	List any similarities and differences that SIIX has with DSGN and FL.
+Answer: Input here….
+	•	Print the topic probabilities and joint word frequency comparison for Design Therapeutics against Six Flags and Foot Locker.
+	•	List the top 10 word frequencies for DSGN.
+Answer: Input here….
+	•	List any similarities and differences that DSGN has with SIIX and FL.
+Answer: Input here….
+	•	Print the topic probabilities and joint word frequency comparison for Foot Locker against Six Flags and Design Therapeutics.
+	•	List the top 10 word frequencies for FL.
+Answer: Input here….
+	•	List any similarities and differences that FL has with SIIX and DSGN.
+Answer: Input here….
+	•	Given those joint word frequency comparisons and the respective topic probabilities for Foot Locker, Six Flags, and Design Therapeutics, what assumptions can be made about the mechanism underlying Hellinger distance?
+Answer: Input here… 
+	•	Looking at the most comparable companies to Six Flags, Foot Locker, and Design Therapeutics, and comparing the distance of the fifth closest company, which of the three do you think has the strongest list of comparables? Which has the weakest list of comparables?
+Answer: Input here… 
+	•	Based on your experience, which approach is more helpful for identifying similar companies for investment analysis? Comparable companies or GICS subindustries?
+Answer: Input here… 

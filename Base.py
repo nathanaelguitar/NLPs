@@ -33,7 +33,12 @@ def getDescriptions():
         - cleanDesc (preprocessed text)
         - nWords (word count)
     """
-    longD = pickle.load(open("longD_unit2.p", "rb"))
+    try:
+        # Try to read with pandas first
+        longD = pd.read_pickle("longD_unit2.p")
+    except:
+        # Fallback: load with pickle
+        longD = pickle.load(open("longD_unit2.p", "rb"), encoding='latin1')
     longD = longD.sort_values(by='mktcap', ascending=False)  # Order largest to smallest
     longD = longD.reset_index(drop=True)  # Reset index in market cap order
     longD = longD[longD['gics'] > 0]  # Filter to companies with GICS codes
@@ -58,7 +63,10 @@ def getEmbeddings():
         - topic_words: List of top 10 words for the topic
     """
     # Load data
-    longD = pickle.load(open("longD_unit2.p", "rb"))
+    try:
+        longD = pd.read_pickle("longD_unit2.p")
+    except:
+        longD = pickle.load(open("longD_unit2.p", "rb"), encoding='latin1')
     longD = longD.sort_values(by='mktcap', ascending=False)
     longD = longD.reset_index(drop=True)
     longD = longD[longD['gics'] > 0]
