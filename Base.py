@@ -20,6 +20,54 @@ import os
 import pickle
 import tomotopy as tp
 import pandas as pd
+import numpy as np
+
+try:
+    from gensim.models.doc2vec import Doc2Vec
+    from sklearn.preprocessing import StandardScaler
+except Exception:
+    Doc2Vec = None
+    StandardScaler = None
+
+
+DOC2VEC_MODEL_PATH = "/Users/nathanaelguitar/Downloads/d2v_model.p"
+_DOC2VEC_CACHE = None
+_DOC2VEC_DF_CACHE = None
+_DOC2VEC_VEC_CACHE = None
+
+
+if not hasattr(pd.DataFrame, "append"):
+    def _append_compat(self, other, ignore_index=False, **kwargs):
+        return pd.concat([self, other], ignore_index=ignore_index, **kwargs)
+
+    pd.DataFrame.append = _append_compat
+
+
+class _Doc2VecCompat:
+    def __init__(self, model, docvecs):
+        self._model = model
+        self.wv = model.wv
+        self.docvecs = docvecs
+
+    def __getattr__(self, name):
+        return getattr(self._model, name)
+
+
+def _normalize_keyed_vectors(kv, keys, norms_attr):
+    if kv is None:
+        return None
+
+    if not hasattr(kv, "index_to_key"):
+        kv.index_to_key = list(keys)
+    if not hasattr(kv, "key_to_index"):
+        kv.key_to_index = {key: i for i, key in enumerate(kv.index_to_key)}
+    if hasattr(kv, "vectors_docs") and getattr(kv, "vectors", None) is not None:
+        if kv.vectors.shape[0] == 0 and kv.vectors_docs.shape[0] > 0:
+            kv.vectors = kv.vectors_docs
+    if not hasattr(kv, "norms"):
+        kv.norms = getattr(kv, norms_attr, None)
+
+    return kv
 
 
 def getDescriptions():
@@ -179,3 +227,123 @@ def getldaIndGrpClean():
         Tomotopy LDAModel object
     """
     return tp.LDAModel.load("ldaIndGrpCleanFinal.mdl")
+
+
+def _require_doc2vec_dependencies():
+    if Doc2Vec is None or StandardScaler is None:
+        raise ImportError(
+            "Doc2Vec helpers require gensim and scikit-learn in the active environment."
+        )
+
+
+def _get_docvec_store(model):
+    docvecs = getattr(model, "dv", None)
+    if docvecs is not None:
+        return docvecs
+
+    docvecs = getattr(model, "docvecs", None)
+    if docvecs is not None:
+        return docvecs
+
+    return model.__dict__.get("docvecs")
+
+
+def _get_doc_vector(model, key):
+    docvecs = _get_docvec_store(model)
+    if docvecs is None:
+        raise AttributeError("Doc2Vec model does not expose document vectors.")
+
+    if hasattr(docvecs, "offset2doctag") and hasattr(docvecs, "vectors_docs"):
+        doc_index = {tag: i for i, tag in enumerate(docvecs.offset2doctag)}
+        return docvecs.vectors_docs[doc_index[key]]
+
+    if hasattr(docvecs, "key_to_index"):
+        return docvecs[key]
+
+    raise TypeError("Unsupported document vector store.")
+
+
+def _get_doc_vector_size(model):
+    docvecs = _get_docvec_store(model)
+    if docvecs is None:
+        raise AttributeError("Doc2Vec model does not expose document vectors.")
+
+    if hasattr(docvecs, "vectors_docs"):
+        return docvecs.vectors_docs.shape[1]
+
+    if hasattr(docvecs, "vector_size"):
+        return docvecs.vector_size
+
+    first_key = next(iter(docvecs.doctags))
+    return len(docvecs[first_key])
+
+
+def _load_doc2vec_df():
+    longD = getDescriptions().copy()
+
+    if "desc" not in longD.columns and "longDescription" in longD.columns:
+        longD["desc"] = longD["longDescription"]
+    if "desc" not in longD.columns and "busdescl" in longD.columns:
+        longD["desc"] = longD["busdescl"]
+    if "desc" not in longD.columns:
+        longD["desc"] = longD["cleanDesc"]
+
+    return longD
+
+
+def getd2v():
+    global _DOC2VEC_CACHE
+
+    _require_doc2vec_dependencies()
+
+    if _DOC2VEC_CACHE is None:
+        if not os.path.exists(DOC2VEC_MODEL_PATH):
+            raise FileNotFoundError(
+                f"Doc2Vec model not found at {DOC2VEC_MODEL_PATH}"
+            )
+        model = Doc2Vec.load(DOC2VEC_MODEL_PATH)
+        docvecs = _get_docvec_store(model)
+        wordvecs = _normalize_keyed_vectors(
+            model.wv,
+            model.wv.__dict__.get("index2word", []),
+            "vectors_norm",
+        )
+        docvecs = _normalize_keyed_vectors(
+            docvecs,
+            getattr(docvecs, "offset2doctag", []),
+            "vectors_docs_norm",
+        )
+        model.wv = wordvecs
+        _DOC2VEC_CACHE = _Doc2VecCompat(model, docvecs)
+
+    return _DOC2VEC_CACHE
+
+
+def getd2vDf():
+    global _DOC2VEC_DF_CACHE
+
+    if _DOC2VEC_DF_CACHE is None:
+        d2v = getd2v()
+        longD = _load_doc2vec_df()
+        vec = [_get_doc_vector(d2v, text) for text in longD["cleanDesc"]]
+        scaled_vec = StandardScaler().fit_transform(vec)
+
+        d2vDf = longD.copy()
+        d2vDf["logmcap"] = np.log(d2vDf["mktcap"])
+        for i in range(_get_doc_vector_size(d2v)):
+            d2vDf[f"d2v{i}"] = scaled_vec[:, i]
+
+        _DOC2VEC_DF_CACHE = d2vDf
+
+    return _DOC2VEC_DF_CACHE
+
+
+def getvec():
+    global _DOC2VEC_VEC_CACHE
+
+    if _DOC2VEC_VEC_CACHE is None:
+        d2v = getd2v()
+        d2vDf = getd2vDf()
+        _DOC2VEC_VEC_CACHE = [_get_doc_vector(d2v, text) for text in d2vDf["cleanDesc"]]
+
+    return _DOC2VEC_VEC_CACHE

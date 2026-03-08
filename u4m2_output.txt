@@ -1,0 +1,380 @@
+===== CELL 0 START =====
+===== CELL 0 END =====
+===== CELL 1 START =====
+===== CELL 1 END =====
+===== CELL 2 START =====
+                compustat_name ticker gicsSubind
+956     DESIGN THERAPEUTIS INC   DSGN   35201010
+704                ALECTOR INC   ALEC   35201010
+449       BRIDGEBIO PHARMA INC   BBIO   35201010
+827  SORRENTO THERAPEUTICS INC   SRNE   35201010
+689        MORPHIC HOLDING INC   MORF   35201010
+645        EDITAS MEDICINE INC   EDIT   35201010
+339      SANA BIOTCHNOLOGY INC   SANA   35201010
+629           NUVATION BIO INC   NUVB   35202010
+716                INHIBRX INC   INBX   35201010
+652   CELLDEX THERAPEUTICS INC   CLDX   35201010
+242     RELAY THERAPEUTICS INC   RLAY   35201010
+ 
+ BUSINESS DESCRIPTIONS 
+ 
+Design Therapeutics, Inc. a preclinical-stage biopharmaceutical company, engages in the development of therapies for the treatment of genetic diseases caused by nucleotide repeat expansions. The company’s portfolio of products comprises Friedreich Ataxia, a monogenic, autosomal recessive, progressive multi-system disease that affects organ systems dependent on mitochondrial function, eventually leading to neurological, cardiac, and metabolic dysfunction; and Myotonic Dystrophy Type-1 (DM1), a do
+ 
+Alector, Inc., a clinical stage biopharmaceutical company, develops therapies for the treatment of neurodegeneration diseases. Its products include AL001, a humanized recombinant monoclonal antibody, which is in Phase III clinical trial for the treatment of frontotemporal dementia, Alzheimer’s, Parkinson’s, and amyotrophic lateral sclerosis diseases; and AL101 that is in Phase I clinical trial for the treatment of neurodegenerative diseases, including Alzheimer’s and Parkinson’s diseases. The co
+ 
+BridgeBio Pharma, Inc. engages in the discovery, development, and delivery of various medicines for genetic diseases. The company has a pipeline of 30 development programs that include product candidates ranging from early discovery to late-stage development. Its products in development programs include AG10 and BBP-265, a small molecule stabilizer of transthyretin, or TTR that is in Phase 3 clinical trial for the treatment of TTR amyloidosis-cardiomyopathy, or ATTR-CM; BBP-831, a small molecule
+ 
+Sorrento Therapeutics, Inc., a clinical stage and commercial biopharmaceutical company, develops therapies for cancer, autoimmune, inflammatory, viral, and neurodegenerative diseases. It operates through two segments, Sorrento Therapeutics and Scilex. The company provides cancer therapeutic by leveraging its proprietary G-MAB antibody library and targeted delivery modalities, which include chimeric antigen receptor T-cell therapy (CAR-T), dimeric antigen receptor T-cell therapy, and antibody dru
+ 
+Morphic Holding, Inc., a biopharmaceutical company, discovers and develops oral small-molecule integrin therapeutics for the treatment of autoimmune, cardiovascular, metabolic diseases, as well as fibrosis and cancer. Its lead product candidates are MORF-057, an a4ß7-specific integrin inhibitor affecting inflammation that is in Phase 1 clinical trial for the treatment of inflammatory bowel disease; and preclinical trial to treat idiopathic pulmonary fibrosis and fibrosis diseases. The company is
+ 
+Editas Medicine, Inc., a clinical stage genome editing company, focuses on developing transformative genomic medicines to treat a range of serious diseases. It develops a proprietary gene editing platform based on CRISPR technology. The company develops EDIT-101, which is in Phase 1/2 clinical trial for Leber Congenital Amaurosis 10 that leads to inherited childhood blindness. It also develops EDIT-102 for the treatment of Usher Syndrome 2A, which is a form of retinitis pigmentosa that also incl
+ 
+Sana Biotechnology, Inc., a biotechnology company, focuses on utilizing engineered cells as medicines. The company develops ex vivo and in vivo cell engineering platforms for various therapeutic areas with unmet treatment needs, including oncology, diabetes, central nervous system disorders, cardiovascular diseases, genetic disorders, and others. Its product candidates include SG295 and SG242 that target CD19+ cancer cells, including non-Hodgkin Lymphoma, chronic lymphocytic leukemia, and acute 
+ 
+Nuvation Bio Inc., a clinical-stage biopharmaceutical company, focuses on the development of therapeutic candidates for oncology. The company’s lead product candidate is NUV-422, a small molecule inhibitor targeting cyclin-dependent kinase (CDK)2, CDK4, and CDK6. It is also developing NUV-868, a selective oral small molecule BET inhibitor that epigenetically regulates proteins that control tumor growth and differentiation; NUV-569, a differentiated oral small molecule selective inhibitor of the 
+ 
+Inhibrx, Inc., a clinical-stage biotechnology company, focuses on developing a pipeline of novel biologic therapeutic candidates. The company’s therapeutic candidates include INBRX-109, a tetravalent agonist of death receptor 5, which is in Phase 2 clinical trials to treat cancers, such as chondrosarcoma, mesothelioma, and pancreatic adenocarcinoma; INBRX-105, a tetravalent conditional agonist of programmed death-ligand 1 and a conditional agonist of 4-1BB that is in Phase 1 clinical trials to t
+ 
+Celldex Therapeutics, Inc., a biopharmaceutical company, engages in developing therapeutic monoclonal and bispecific antibodies for the treatment of various diseases. Its drug candidates include antibody-based therapeutics to treat patients with inflammatory diseases and various forms of cancer. The company’s clinical development programs CDX-0159, a Phase I monoclonal antibody that binds the receptor tyrosine kinase KIT and inhibits its activity; CDX-1140, a human agonist monoclonal antibody ta
+ 
+Relay Therapeutics, Inc. operates as a clinical-stage precision medicines company. It engages in transforming the drug discovery process with an initial focus on enhancing small molecule therapeutic discovery in targeted oncology and genetic disease indications. The company’s lead product candidates include RLY-4008, an oral small molecule inhibitor of fibroblast growth factor receptor 2 (FGFR2), which is in a first-in-human clinical trial for patients with advanced or metastatic FGFR2-altered s
+===== CELL 2 END =====
+===== CELL 3 START =====
+Similar to 'genetic'
+[('genomic', 0.982007622718811), ('transcriptome', 0.9790651798248291), ('translational', 0.9736912250518799), ('antisense', 0.9698213934898376), ('validated', 0.9690797328948975), ('variant', 0.9689905643463135), ('diseased', 0.9667215347290039), ('viral', 0.9663098454475403), ('characterize', 0.9660828709602356), ('genome', 0.9646640419960022)]
+===== CELL 3 END =====
+===== CELL 4 START =====
+Similar to 'genetic' plus 'oncology'
+[('genetic', 0.9914970397949219), ('oncology', 0.9894355535507202), ('genomic', 0.9696984887123108), ('precision_medicine', 0.9677948951721191), ('viral', 0.9654496908187866), ('infectious_disease', 0.964536190032959), ('translational', 0.9631481170654297), ('biomarker', 0.9629276394844055), ('transcriptome', 0.9602077007293701), ('autoimmune', 0.957626223564148)]
+===== CELL 4 END =====
+===== CELL 5 START =====
+                compustat_name ticker gicsSubind
+653            TABOOLA.COM LTD   TBLA   50203010
+325                  VIMEO INC   VMEO   50203010
+408                   YELP INC   YELP   50203010
+97             SQUARESPACE INC   SQSP   45102030
+890               POSHMARK INC   POSH   25502020
+478                MAGNITE INC   MGNI   50201010
+104           SHUTTERSTOCK INC   SSTK   25502020
+569           CONTEXTLOGIC INC   WISH   25502020
+315           SEMRUSH HOLD INC   SEMR   45103010
+841         THRYV HOLDINGS INC   THRY   50201010
+431     BIGCOMMERCE HOLDIN INC   BIGC   45102030
+661                 VACASA INC   VCSA   25301020
+904                   YEXT INC   YEXT   45103010
+254      LIVERAMP HOLDINGS INC   RAMP   45102010
+181         VIZIO HOLDING CORP   VZIO   25201010
+423    ADVANTAGE SOLUTIONS INC    ADV   50201010
+961      USERTESTING INC -REDH   USER   45103010
+463  PULSE EVOLUTION GROUP INC   FUBO   50203010
+311            IHEARTMEDIA INC   IHRT   50201020
+300                 SKILLZ INC   SKLZ   50202020
+165            TRIPADVISOR INC   TRIP   50203010
+ 
+ BUSINESS DESCRIPTIONS 
+ 
+Taboola.com Ltd., together with its subsidiaries, operates an artificial intelligence-based algorithmic engine platform in Israel, the United Kingdom, the United States, Germany, France, and internationally. It offers Taboola, a platform that partners with websites, devices, and mobile apps to recommend editorial content and advertisements on the open web to users. Taboola.com Ltd. was incorporated in 2006 and is headquartered in New York, New York. Taboola.com Ltd operates as a subsidiary of Ne
+ 
+Vimeo, Inc., together with its subsidiaries, provides video software solutions in New York and internationally. The company provides the video tools through a software-as-a-service model, which enables its users to create, collaborate, and communicate with video on a single platform. It also offers over-the-top OTT streaming and monetization services; AI-driven video creation and editing tools; and interactive and shoppable video tools. It serves creative professionals, small businesses, markete
+ 
+Yelp Inc. operates a platform that connects consumers with local businesses in the United States and internationally. The company’s platform covers various local business categories, including restaurants, shopping, beauty and fitness, health, and other categories, as well as home, local, auto, professional, pets, events, real estate, and financial services. It provides free and paid advertising products to businesses, which include cost-per-click search advertising and multi-location Ad product
+ 
+Squarespace, Inc. operates platform for businesses and independent creators to build online presence, grow their brands, and manage their businesses across the internet. Its suite of integrated products enables users to manage their projects and businesses through websites, domains, e-commerce, marketing tools, and scheduling, as well as tools for managing a social media presence. It serves small and medium-sized businesses, and independent creators, such as restaurants, photographers, wedding p
+ 
+Poshmark, Inc. operates as a social marketplace for new and secondhand style products in the United States, Canada, India, and Australia. The company offers apparel, footwear, home, beauty, and pet products, as well as accessories. As of December 31, 2021, it had 7.6 million active buyers. The company was formerly known as GoshPosh, Inc. and changed its name to Poshmark, Inc. in 2011. Poshmark, Inc. was incorporated in 2011 and is headquartered in Redwood City, California. As of January 5, 2023,
+ 
+Magnite, Inc. operates an independent sell-side advertising platform in the United States and internationally. The company’s platform offers applications and services for sellers of digital advertising inventory or publishers that own and operate CTV channels, applications, websites, and other digital media properties, to manage and monetize their inventory; and provides applications and services for buyers, including advertisers, agencies, agency trading desks, and demand side platforms to buy 
+ 
+Shutterstock, Inc., a technology company, provides quality content, and creative workflow solutions in North America, Europe, and internationally. It offers image services consisting of photographs, vectors, and illustrations, which is used in visual communications, such as websites, digital and print marketing materials, corporate communications, books, publications, and others; footage services, including video clips, filmed by industry experts and cinema grade video effects, and HD and 4K for
+ 
+ContextLogic Inc. operates as a mobile ecommerce company in Europe, North America, South America, and internationally. The company operates Wish, an ecommerce platform that connects users to merchants. It also provides marketplace and logistics services to merchants. The company was incorporated in 2010 and is headquartered in San Francisco, California. ContextLogic Inc., doing business as ‘Wish’, operates as a mobile ecommerce company.The company provides a shopping experience that is mobile-fi
+ 
+Semrush Holdings, Inc. develops an online visibility management software-as-a-service platform worldwide. The company enables companies to identify and reach the right audience for their content through the right channels. Its platform enables the company’s customers to understand trends and act upon insights to enhance the online visibility, and drive traffic to their websites and social media pages, as well as online listings, distribute targeted content to their customers, and measure the dig
+ 
+Thryv Holdings, Inc. provides digital marketing solutions and cloud-based tools to the small-to-medium sized businesses (SMBs). It operates through three segments: SaaS (Software as a Service), Marketing Services, and Thryv International. The company provides Thryv, an SMB end-to-end customer experience platform; Hub by Thryv, a solution for franchisors to offer real time oversight and day-to-day management of multiple locations; Thryv Leads, an integrated local marketing and lead generation sol
+ 
+BigCommerce Holdings, Inc. operates a software-as-a-service platform for small businesses, mid-markets, and large enterprises in the United States, Europe, the Middle East, Africa, the Asia-Pacific, and internationally. The company’s platform provides various services for launching and scaling e-commerce operation, including store design, catalog management, hosting, checkout, order management, reporting, and pre-integrations. As of December 31, 2021, it served approximately 60,000 online stores
+ 
+Vacasa, Inc. operates vacation rental management platform in North America, Belize, and Costa Rica. The company enables guests to search, discover, and book its properties on Vacasa.com and the Vacasa Guest App. It also provides services to buy and sell vacation homes through its network of real estate agents. The company was founded in 2009 and is headquartered in Portland, Oregon. Vacasa, Inc. (Vacasa) operates vacation rental management platform.The company’s technology and operations allow h
+ 
+Yext, Inc. organizes business facts to provide answers to consumer questions in North America and internationally. It operates Yext platform, a cloud-based platform that allows its customers to provide answers to consumer questions, to control the facts about their businesses and the content of their landing pages, and to manage their consumer reviews, as well as provides customers to update their information and content through its knowledge network of approximately 200 maps, apps, search engin
+ 
+LiveRamp Holdings, Inc., a technology company, provides enterprise data connectivity platform solutions in the United States, Europe, and the Asia-Pacific. The company offers RampID, a true people-based identifier; Safe Haven, an enterprise data enablement platform; LiveRamp Data Marketplace, a solution that seamlessly connects data owners’ audience data across the marketing ecosystem; and AbiliTec, an offline identity resolution platform. It serves financial, insurance and investment services, 
+ 
+VIZIO Holding Corp., through its subsidiaries, provides smart televisions, sound bars, and accessories in the United States. It also operates Platform+ that comprises SmartCast, a Smart TV operating system, enabling integrated home entertainment solution, and data intelligence and services products through Inscape. Its SmartCast delivers content and applications through an easy-to-use interface, as well as supports streaming apps, such as Amazon Prime Video, Apple TV+, Discovery+, Disney+, HBO M
+ 
+Advantage Solutions Inc. provides outsourced solutions to consumer goods companies and retailers in North America and internationally. It operates in two segments, Sales and Marketing. The Sales segment offers brand-centric services, such as headquarter relationship management; analytics, insights, and intelligence; administration; and brand-centric merchandising services. This segment also provides retailer-centric services comprising retailer-centric merchandising, in-store media, and digital 
+ 
+UserTesting, Inc. engages in the operation of a software-as-a-service (SaaS) platform that enables organizations to know experiences of people as they engage with products, designs, apps, processes, concepts, or brands in the United States, the United Kingdom, and internationally. Its platform captures customer perspectives from targeted audiences who share their thoughts for digital, real-world, or omnichannel experiences. The company sells through a direct selling motion and field sales repres
+ 
+fuboTV Inc. operates a live TV streaming platform for live sports, news, and entertainment content in the United States and internationally. Its fuboTV platform allows customers to access content through streaming devices, as well as on SmartTVs, computers, mobile phones, and tablets. The company is headquartered in New York, New York. fuboTV Inc. operates as a sports-first, live TV streaming company.The company offers subscribers access to tens of thousands of live sporting events annually, as 
+ 
+iHeartMedia, Inc. operates as a media and entertainment company worldwide. It operates through three segments: Multiplatform Group, Digital Audio Group, and Audio & Media Services Group. The Multiplatform Group segment offers broadcast radio stations, sponsorship, and live and virtual events; and operates Premiere Networks, a national radio network that produces, distributes, or represents approximately 120 syndicated radio programs and services to approximately 6,400 radio station affiliates. I
+ 
+Skillz Inc. operates a mobile games platform that connects players in fair, fun, and meaningful competition. The company primarily develops and supports a proprietary online-hosted technology platform that enables independent game developers to host tournaments and provide competitive gaming activity to end-users worldwide. It also hosts casual esports tournaments to a range of mobile players. The company distributes games through direct app download from its website, as well as through third-pa
+ 
+TripAdvisor, Inc. operates as an online travel company. It operates in two segments, Hotels, Media & Platform; and Experiences & Dining. The company operates TripAdvisor-branded websites, including tripadvisor.com in the United States; and localized versions of the website in 40 markets and 20 languages. It also manages and operates other travel media brands that provide users the comprehensive travel-planning and trip-taking resources in the travel industry, such as bokun.io, cruisecritic.com, 
+===== CELL 5 END =====
+===== CELL 6 START =====
+Similar to 'social_media'
+[('instagram', 0.9793376326560974), ('search_engine', 0.9751037955284119), ('marketing_campaigns', 0.9726099371910095), ('advertisement', 0.9721377491950989), ('advertising_campaign', 0.9720531105995178), ('facebook', 0.9688441753387451), ('public_relations', 0.9649640321731567), ('audience', 0.9644854068756104), ('twitter', 0.9643033742904663), ('mobile_apps', 0.964286744594574), ('influencers', 0.9604655504226685), ('wish', 0.9597389698028564), ('newsletter', 0.9581273794174194), ('influencer', 0.9574030637741089), ('advertise', 0.9566971063613892), ('creative', 0.956525981426239), ('yelp', 0.9557828903198242), ('taboola', 0.9556882381439209), ('direct_mail', 0.9554011225700378), ('offline', 0.9544278979301453), ('website', 0.9529599547386169), ('friend', 0.9517185688018799), ('loyal', 0.9516937136650085), ('forum', 0.9512938857078552), ('advertiser', 0.9511950612068176)]
+===== CELL 6 END =====
+===== CELL 7 START =====
+                      word  freq
+90             advertising   563
+732             advertiser   134
+2198         advertisement    51
+5116  advertising_campaign    20
+5378             advertise    18
+             word  freq
+302        social   250
+426  social_media   194
+                         word  freq
+61                   research   780
+314                    search   241
+1079               researcher    97
+1935            search_engine    57
+3705  research_developmentfor    29
+4916                searching    21
+7431              researching    11
+===== CELL 7 END =====
+===== CELL 8 START =====
+                compustat_name ticker gicsSubind
+653            TABOOLA.COM LTD   TBLA   50203010
+325                  VIMEO INC   VMEO   50203010
+408                   YELP INC   YELP   50203010
+478                MAGNITE INC   MGNI   50201010
+104           SHUTTERSTOCK INC   SSTK   25502020
+97             SQUARESPACE INC   SQSP   45102030
+890               POSHMARK INC   POSH   25502020
+569           CONTEXTLOGIC INC   WISH   25502020
+315           SEMRUSH HOLD INC   SEMR   45103010
+463  PULSE EVOLUTION GROUP INC   FUBO   50203010
+181         VIZIO HOLDING CORP   VZIO   25201010
+311            IHEARTMEDIA INC   IHRT   50201020
+300                 SKILLZ INC   SKLZ   50202020
+431     BIGCOMMERCE HOLDIN INC   BIGC   45102030
+594             EVENTBRITE INC     EB   50203010
+661                 VACASA INC   VCSA   25301020
+904                   YEXT INC   YEXT   45103010
+254      LIVERAMP HOLDINGS INC   RAMP   45102010
+841         THRYV HOLDINGS INC   THRY   50201010
+307          QURATE RETAIL INC  QRTEA   25502020
+165            TRIPADVISOR INC   TRIP   50203010
+ 
+ BUSINESS DESCRIPTIONS 
+ 
+Taboola.com Ltd., together with its subsidiaries, operates an artificial intelligence-based algorithmic engine platform in Israel, the United Kingdom, the United States, Germany, France, and internationally. It offers Taboola, a platform that partners with websites, devices, and mobile apps to recommend editorial content and advertisements on the open web to users. Taboola.com Ltd. was incorporated in 2006 and is headquartered in New York, New York. Taboola.com Ltd operates as a subsidiary of Ne
+ 
+Vimeo, Inc., together with its subsidiaries, provides video software solutions in New York and internationally. The company provides the video tools through a software-as-a-service model, which enables its users to create, collaborate, and communicate with video on a single platform. It also offers over-the-top OTT streaming and monetization services; AI-driven video creation and editing tools; and interactive and shoppable video tools. It serves creative professionals, small businesses, markete
+ 
+Yelp Inc. operates a platform that connects consumers with local businesses in the United States and internationally. The company’s platform covers various local business categories, including restaurants, shopping, beauty and fitness, health, and other categories, as well as home, local, auto, professional, pets, events, real estate, and financial services. It provides free and paid advertising products to businesses, which include cost-per-click search advertising and multi-location Ad product
+ 
+Magnite, Inc. operates an independent sell-side advertising platform in the United States and internationally. The company’s platform offers applications and services for sellers of digital advertising inventory or publishers that own and operate CTV channels, applications, websites, and other digital media properties, to manage and monetize their inventory; and provides applications and services for buyers, including advertisers, agencies, agency trading desks, and demand side platforms to buy 
+ 
+Shutterstock, Inc., a technology company, provides quality content, and creative workflow solutions in North America, Europe, and internationally. It offers image services consisting of photographs, vectors, and illustrations, which is used in visual communications, such as websites, digital and print marketing materials, corporate communications, books, publications, and others; footage services, including video clips, filmed by industry experts and cinema grade video effects, and HD and 4K for
+ 
+Squarespace, Inc. operates platform for businesses and independent creators to build online presence, grow their brands, and manage their businesses across the internet. Its suite of integrated products enables users to manage their projects and businesses through websites, domains, e-commerce, marketing tools, and scheduling, as well as tools for managing a social media presence. It serves small and medium-sized businesses, and independent creators, such as restaurants, photographers, wedding p
+ 
+Poshmark, Inc. operates as a social marketplace for new and secondhand style products in the United States, Canada, India, and Australia. The company offers apparel, footwear, home, beauty, and pet products, as well as accessories. As of December 31, 2021, it had 7.6 million active buyers. The company was formerly known as GoshPosh, Inc. and changed its name to Poshmark, Inc. in 2011. Poshmark, Inc. was incorporated in 2011 and is headquartered in Redwood City, California. As of January 5, 2023,
+ 
+ContextLogic Inc. operates as a mobile ecommerce company in Europe, North America, South America, and internationally. The company operates Wish, an ecommerce platform that connects users to merchants. It also provides marketplace and logistics services to merchants. The company was incorporated in 2010 and is headquartered in San Francisco, California. ContextLogic Inc., doing business as ‘Wish’, operates as a mobile ecommerce company.The company provides a shopping experience that is mobile-fi
+ 
+Semrush Holdings, Inc. develops an online visibility management software-as-a-service platform worldwide. The company enables companies to identify and reach the right audience for their content through the right channels. Its platform enables the company’s customers to understand trends and act upon insights to enhance the online visibility, and drive traffic to their websites and social media pages, as well as online listings, distribute targeted content to their customers, and measure the dig
+ 
+fuboTV Inc. operates a live TV streaming platform for live sports, news, and entertainment content in the United States and internationally. Its fuboTV platform allows customers to access content through streaming devices, as well as on SmartTVs, computers, mobile phones, and tablets. The company is headquartered in New York, New York. fuboTV Inc. operates as a sports-first, live TV streaming company.The company offers subscribers access to tens of thousands of live sporting events annually, as 
+ 
+VIZIO Holding Corp., through its subsidiaries, provides smart televisions, sound bars, and accessories in the United States. It also operates Platform+ that comprises SmartCast, a Smart TV operating system, enabling integrated home entertainment solution, and data intelligence and services products through Inscape. Its SmartCast delivers content and applications through an easy-to-use interface, as well as supports streaming apps, such as Amazon Prime Video, Apple TV+, Discovery+, Disney+, HBO M
+ 
+iHeartMedia, Inc. operates as a media and entertainment company worldwide. It operates through three segments: Multiplatform Group, Digital Audio Group, and Audio & Media Services Group. The Multiplatform Group segment offers broadcast radio stations, sponsorship, and live and virtual events; and operates Premiere Networks, a national radio network that produces, distributes, or represents approximately 120 syndicated radio programs and services to approximately 6,400 radio station affiliates. I
+ 
+Skillz Inc. operates a mobile games platform that connects players in fair, fun, and meaningful competition. The company primarily develops and supports a proprietary online-hosted technology platform that enables independent game developers to host tournaments and provide competitive gaming activity to end-users worldwide. It also hosts casual esports tournaments to a range of mobile players. The company distributes games through direct app download from its website, as well as through third-pa
+ 
+BigCommerce Holdings, Inc. operates a software-as-a-service platform for small businesses, mid-markets, and large enterprises in the United States, Europe, the Middle East, Africa, the Asia-Pacific, and internationally. The company’s platform provides various services for launching and scaling e-commerce operation, including store design, catalog management, hosting, checkout, order management, reporting, and pre-integrations. As of December 31, 2021, it served approximately 60,000 online stores
+ 
+Eventbrite, Inc. operates a self-service ticketing and experience technology platform that serves event creators in the United States and internationally. Its platform integrates components needed to plan, promote, and produce live events that allow creators to reduce friction and costs, increase reach, and drive ticket sales. The company was formerly known as Mollyguard Corporation and changed its name to Eventbrite, Inc. in 2009. Eventbrite, Inc. was incorporated in 2008 and is headquartered i
+ 
+Vacasa, Inc. operates vacation rental management platform in North America, Belize, and Costa Rica. The company enables guests to search, discover, and book its properties on Vacasa.com and the Vacasa Guest App. It also provides services to buy and sell vacation homes through its network of real estate agents. The company was founded in 2009 and is headquartered in Portland, Oregon. Vacasa, Inc. (Vacasa) operates vacation rental management platform.The company’s technology and operations allow h
+ 
+Yext, Inc. organizes business facts to provide answers to consumer questions in North America and internationally. It operates Yext platform, a cloud-based platform that allows its customers to provide answers to consumer questions, to control the facts about their businesses and the content of their landing pages, and to manage their consumer reviews, as well as provides customers to update their information and content through its knowledge network of approximately 200 maps, apps, search engin
+ 
+LiveRamp Holdings, Inc., a technology company, provides enterprise data connectivity platform solutions in the United States, Europe, and the Asia-Pacific. The company offers RampID, a true people-based identifier; Safe Haven, an enterprise data enablement platform; LiveRamp Data Marketplace, a solution that seamlessly connects data owners’ audience data across the marketing ecosystem; and AbiliTec, an offline identity resolution platform. It serves financial, insurance and investment services, 
+ 
+Thryv Holdings, Inc. provides digital marketing solutions and cloud-based tools to the small-to-medium sized businesses (SMBs). It operates through three segments: SaaS (Software as a Service), Marketing Services, and Thryv International. The company provides Thryv, an SMB end-to-end customer experience platform; Hub by Thryv, a solution for franchisors to offer real time oversight and day-to-day management of multiple locations; Thryv Leads, an integrated local marketing and lead generation sol
+ 
+Qurate Retail, Inc., together with its subsidiaries, engages in the video and online commerce industries in North America, Europe, and Asia. The company markets and sells various consumer products primarily through merchandise-focused televised shopping programs, Internet, and mobile applications. It also operates as an online retailer offering women’s, children’s, and men’s apparel; and other products, such as home, accessories, and beauty products through its app, mobile, and desktop applicati
+ 
+TripAdvisor, Inc. operates as an online travel company. It operates in two segments, Hotels, Media & Platform; and Experiences & Dining. The company operates TripAdvisor-branded websites, including tripadvisor.com in the United States; and localized versions of the website in 40 markets and 20 languages. It also manages and operates other travel media brands that provide users the comprehensive travel-planning and trip-taking resources in the travel industry, such as bokun.io, cruisecritic.com, 
+===== CELL 8 END =====
+===== CELL 9 START =====
+                   compustat_name ticker gicsSubind
+313          FULGENT GENETICS INC   FLGT   35102015
+20   PACIFIC BIOSCIENCES OF CALIF   PACB   35203010
+588                    HESKA CORP   HSKA   35101010
+209                  INVITAE CORP   NVTA   35201010
+146         TWIST BIOSCIENCE CORP   TWST   35201010
+338                  VERACYTE INC   VCYT   35201010
+74                NEOGENOMICS INC    NEO   35203010
+692         MESA LABORATORIES INC   MLAB   35101010
+835                      SEER INC   SEER   35203010
+416                   AXONICS INC   AXNX   35101010
+504           MYRIAD GENETICS INC   MYGN   35201010
+765                QUANTERIX CORP   QTRX   35203010
+963            PULMONX CORP -REDH   LUNG   35101020
+596   NANOSTRING TECHNOLOGIES INC   NSTG   35203010
+6               INARI MEDICAL INC   NARI   35101010
+796         SILK ROAD MEDICAL INC   SILK   35101020
+534                 SOMALOGIC INC   SLGC   35203010
+462                    CAREDX INC   CDNA   35201010
+122         ADAPTIVE BIOTECH CORP   ADPT   35203010
+363         INTEGER HOLDINGS CORP   ITGR   35101010
+937           BERKELEY LIGHTS INC    BLI   35203010
+927        CYDUCT DIAGNOSTICS INC   PCRC   35101010
+268                  ATRICURE INC   ATRC   35101010
+884         BUTTERFLY NETWORK INC   BFLY   35101010
+656          AVID BIOSERVICES INC   CDMO   35201010
+201     MERIT MEDICAL SYSTEMS INC   MMSI   35101020
+ 
+ BUSINESS DESCRIPTIONS 
+ 
+Fulgent Genetics, Inc., together with its subsidiaries, provides COVID-19, molecular diagnostic, and genetic testing services to physicians and patients in the United States and internationally. The company offers genetic tests comprising Focus and Comprehensive oncology panels tests; Beacon carrier screening panels test for inherited conditions; solid tumor molecular profiling for somatic cancer testing; rapid whole genome testing for children in NICU and PICU; newborn genetic analysis panel; s
+ 
+Pacific Biosciences of California, Inc. designs, develops, and manufactures sequencing systems to resolve genetically complex problems. The company provides PacBio’s Systems, which conduct, monitor, and analyse biochemical sequencing reactions; consumable products, including single molecule real-time (SMRT) cells; and various reagent kits designed for specific workflow, such as template preparation kit to convert DNA into SMRTbell double-stranded DNA library formats, including molecular biology 
+ 
+Heska Corporation sells veterinary and animal health diagnostic and specialty products for canine and feline healthcare markets in the United States, Canada, Mexico, Australia, France, Germany, Italy, Malaysia, Spain, and Switzerland. The company offers Element DC, Element DCX, Element DC5x veterinary chemistry analyzers for blood chemistry and electrolyte analysis; Element RC, Element RCX, and Element RC3X chemistry systems for blood chemistry and electrolyte analysis; Element HT5 and scil Vet 
+ 
+Invitae Corporation, a medical genetics company, integrates genetic information into mainstream medicine to improve healthcare of people in the United States, Canada, and internationally. The company offers genetic tests in various clinical areas, including hereditary cancer, cardiology, neurology, pediatrics, oncology, metabolic conditions, and rare diseases; digital health solutions; and health data services. It serves patients, healthcare providers, biopharma companies, and other partners. Th
+ 
+Twist Bioscience Corporation, a synthetic biology company, manufactures and sells synthetic DNA-based products. The company’s DNA synthesis platform enables the manufacturing of synthetic DNA by writing DNA on a silicon chip. It offers synthetic DNA-based products, including synthetic genes, tools for sample preparation, antibody libraries for drug discovery and development, and DNA as a digital data storage medium. The company has collaboration agreements with Victorian Clinical Genetic Service
+ 
+Veracyte, Inc. operates as a diagnostics company worldwide. The company offers Afirma Genomic Sequencing Classifier and Xpression Atlas, which are used to determine patients with indeterminate results are benign to avoid unnecessary surgery; Decipher Prostate Biopsy and Radical Prostatectomy for prostate cancer diagnosis; Prosigna Breast Cancer Assay for breast cancer diagnosis; Percepta Genomic Sequencing Classifier and Percepta Nasal Swab Test for lung cancer diagnosis; Envisia Genomic Classif
+ 
+NeoGenomics, Inc. operates a network of cancer-focused testing laboratories in the United States, Europe, and Asia. It operates through, Clinical Services and Pharma Services segments. The company offers testing services to hospitals, reference labs, pathologists, oncologists, clinicians, pharmaceutical firms, and researchers. It provides cytogenetics testing services to study normal and abnormal chromosomes and their relationship to diseases; fluorescence in-situ hybridization testing services 
+ 
+Mesa Laboratories, Inc. develops, manufactures, and sells life sciences tools and quality control products and services in the United States, Europe, the Asia Pacific, and internationally. The company’s Sterilization and Disinfection Control segment manufactures and sells biological, cleaning, and chemical indicators that are used to assess the effectiveness of sterilization and disinfection processes in the hospital, dental, medical device, and pharmaceutical industries. This segment also provi
+ 
+Seer, Inc., a life sciences company, engages in developing and commercializing products to decode the secrets of the proteome. It develops Proteograph Product Suite, an integrated solution that comprises consumables, an automation instrumentation, and software that allows researchers to conduct proteomic studies in therapeutic and diagnostic research, and clinical trials. The company intends to sell its products for research purposes, which cover academic institutions, life sciences, and researc
+ 
+Axonics, Inc., a medical technology company, engages in the development and commercialization of sacral neuromodulation (SNM) systems. The company’s SNM systems are used to treat patients with overactive bladder, including urinary urge incontinence and urinary urgency frequency, as well as fecal incontinence and non-obstructive urinary retention. Its proprietary rechargeable SNM System (r-SNM) delivers mild electrical pulses to the targeted sacral nerve to restore normal communication to and fro
+ 
+Myriad Genetics, Inc., a genetic testing and precision medicine company, develops and commercializes genetic tests in the United States and internationally. The company offers molecular diagnostic tests for use in oncology, and women's and mental health applications. It provides MyRisk Hereditary Cancer Test, a DNA sequencing test for assessing the risks for hereditary cancers; BRACAnalysis CDx Germline Companion Diagnostic Test, a DNA sequencing test to help determine the therapy for patients w
+ 
+Quanterix Corporation, a life sciences company, engages in development and marketing of digital immunoassay platforms that advances precision health for life sciences research and diagnostics in North America, Europe, the Middle East, Africa, and the Asia Pacific regions. It offers HD-X instrument, a sensitive automated multiplex protein detection platform; and SR-X instrument that enables researchers to apply Simoa detection technology in various applications, including direct detection of nucl
+ 
+Pulmonx Corporation, a medical technology company, provides minimally invasive devices for the treatment of chronic obstructive pulmonary diseases. It offers Zephyr Endobronchial Valve, a solution for the treatment of bronchoscopic in adult patients with hyperinflation associated with severe emphysema; and Chartis Pulmonary Assessment System, a balloon catheter and console system with flow and pressure sensors that are used to assess the presence of collateral ventilation. The company also provi
+ 
+NanoString Technologies, Inc. develops, manufactures, and sells tools for scientific and clinical research in the fields of genomics and proteomics in the Americas, Europe, the Middle East, and the Asia Pacific. The company offers nCounter Analysis System, an automated, multi-application, digital detection, and counting system. It provides nCounter MAX and FLEX systems that include Prep Station, an automated liquid handling component that processes and prepares samples for data collection; and n
+ 
+Inari Medical, Inc., a medical device company, develops, manufactures, markets, and sells devices for the interventional treatment of venous diseases in the United States. The company provides ClotTriever, a mechanical thrombectomy system, which is designed to core, capture, and remove large clots from large vessels, as well as for treatment of deep vein thrombosis; and FlowTriever, a large bore catheter-based aspiration and mechanical thrombectomy system, for treatment of pulmonary embolism. It
+ 
+Silk Road Medical, Inc. operates as a medical device company in the United States. The company offers various products for the treatment of carotid artery disease called transcarotid artery revascularization. Its products include ENROUTE Transcarotid Neuroprotection System that is used to directly access the common carotid artery and initiate temporary blood flow reversal; ENROUTE Transcarotid Stent System, a self-expanding, self-tapering stent; ENHANCE Transcarotid Peripheral Access Kit for use
+ 
+SomaLogic, Inc. operates as a protein biomarker discovery and clinical diagnostics company in the United States. It develops slow off-rate modified aptamers (SOMAmers), which are modified nucleic acid-based protein binding reagents that are specific for their cognate protein; and offers proprietary SomaScan services, which provide multiplex protein detection and quantification of protein levels in complex biological samples. The company’s SOMAmers/SomaScan technology enables researchers to analy
+ 
+CareDx, Inc. discovers, develops, and commercializes diagnostic solutions for transplant patients and caregivers worldwide. It provides AlloSure Kidney, a donor-derived cell-free DNA (dd-cfDNA) solution for kidney transplant patients; AlloMap Heart, a gene expression solution for heart transplant patients; AlloSure Heart, a dd-cfDNA solution for heart transplant patients; and AlloSure Lung, a dd-cfDNA solution for lung transplant patients. The company also offers TruSight HLA, a next generation 
+ 
+Adaptive Biotechnologies Corporation, a commercial-stage company, develops an immune medicine platform for the diagnosis and treatment of various diseases. The company offers immunoSEQ, a platform and core immunosequencing product that is used to answer translational research questions, as well as to discover new prognostic and diagnostic signals; and T-Detect COVID for the confirmation of past COVID-19 infection. It also provides clonoSEQ, a clinical diagnostic product for the detection and mon
+ 
+Integer Holdings Corporation operates as a medical device outsource manufacturer in the United States, Puerto Rico, Costa Rica, and internationally. It operates through Medical and Non-Medical segments. The company offers products for interventional cardiology, structural heart, heart failure, peripheral vascular, neurovascular, interventional oncology, electrophysiology, vascular access, infusion therapy, hemodialysis, urology, and gastroenterology procedures. It also provides cardiac rhythm ma
+ 
+Berkeley Lights, Inc., a digital cell biology company, focuses on enabling and accelerating the rapid development and commercialization of biotherapeutics and other cell-based products. The company offers an integrated platform, which comprise of proprietary consumables, including OptoSelect chips and reagent kits, automation systems, and application and workflow software. It serves in North America, the Asia Pacific, and Europe. Berkeley Lights, Inc. was incorporated in 2011 and is headquartere
+ 
+CYduct Diagnostics, Inc., a healthcare instrument company, develops and markets technology, applications, medical devices, and procedural techniques for the screening, diagnosis, treatment, and management of disease and medical conditions. The company’s products include breast endoscopy systems; 3-chip and 1-chip camera systems; cameras and accessories; endoscopic instruments, such as dissectors, graspers, scissors, needle holders, fan retractors, cautery instruments, and insufflation needles; a
+ 
+AtriCure, Inc. develops, manufactures, and sells devices for the surgical ablation of cardiac tissue and systems, and intercostal nerves to medical centers in the United States, Europe, Asia, and internationally. The company offers Isolator Synergy Clamps, a single-use disposable radio frequency products; multifunctional pens and linear ablation devices, such as the MAX Pen device that enables surgeons to evaluate cardiac arrhythmias, perform temporary cardiac pacing, sensing, and stimulation an
+ 
+Butterfly Network, Inc., a digital health company, develops, manufactures, and commercializes ultrasound imaging solutions in the United States and internationally. It offers Butterfly iQ, a handheld and single-probe whole body ultrasound system; Butterfly iQ+, a point-of-care ultrasound imaging device that connects with a smartphone, tablet, and hospital computer system; and Butterfly Blueprint, a system-wide ultrasound platform with Compass software that integrates into a healthcare system’s c
+ 
+Avid Bioservices, Inc., a contract development and manufacturing organization, provides process development and current good manufacturing practices (CGMP) clinical and commercial manufacturing services focused on biopharmaceutical drug substances derived from mammalian cell culture. The company produces monoclonal antibodies and recombinant proteins; and offers services, including CGMP clinical and commercial drug substance manufacturing, bulk packaging, release and stability testing, and regul
+ 
+Merit Medical Systems, Inc. designs, develops, manufactures, and markets single-use medical products for interventional, diagnostic, and therapeutic procedures, primarily in cardiology, radiology, oncology, critical care, and endoscopy. The company operates in two segments, Cardiovascular and Endoscopy. It provides peripheral intervention products for the diagnosis and treatment of diseases in peripheral vessels and organs; and cardiac intervention products, such as access, angiography, electrop
+===== CELL 9 END =====
+===== CELL 10 START =====
+Similar to 'genomics'
+[('diagnostics', 0.9639049768447876), ('diagnostic', 0.9350354075431824), ('genetics', 0.9284557104110718), ('scientific', 0.9095836281776428), ('laboratory', 0.9076109528541565), ('agena', 0.8966209888458252), ('testing', 0.8860925436019897), ('fulgent', 0.8833169937133789), ('diagnostic_test', 0.8811541795730591), ('lab', 0.8780897855758667), ('immunoassay', 0.8702226281166077), ('germline', 0.8642151951789856), ('ncounter_analysis', 0.8634955286979675), ('molecular', 0.8611850738525391), ('ivd', 0.8567126989364624), ('specimen', 0.8559536933898926), ('infectious_disease', 0.8505242466926575), ('massarray', 0.844455897808075), ('bwx', 0.8427107930183411), ('ec', 0.8417978882789612), ('nanostring', 0.8415858149528503), ('radiopharmaceutical', 0.841107964515686), ('cardiology', 0.8389561176300049), ('neogenomics', 0.8382557034492493), ('physic', 0.8372641205787659)]
+===== CELL 10 END =====
+===== CELL 11 START =====
+                   compustat_name ticker gicsSubind      mktcap
+209                  INVITAE CORP   NVTA   35201010  3456.68517
+534                 SOMALOGIC INC   SLGC   35203010  2108.85372
+504           MYRIAD GENETICS INC   MYGN   35201010    2203.998
+656          AVID BIOSERVICES INC   CDMO   35201010  1796.93358
+645           EDITAS MEDICINE INC   EDIT   35201010  1815.99345
+956        DESIGN THERAPEUTIS INC   DSGN   35201010  1191.74483
+339         SANA BIOTCHNOLOGY INC   SANA   35201010  2923.13484
+264       AMICUS THERAPEUTICS INC   FOLD   35201010  3218.28045
+704                   ALECTOR INC   ALEC   35201010   1678.3494
+439           NEKTAR THERAPEUTICS   NKTR   35202010  2493.36507
+836    ROCKET PHARMACEUTICALS INC   RCKT   35201010  1406.79069
+676           KRYSTAL BIOTECH INC   KRYS   35201010   1742.1747
+587         LANTHEUS HOLDINGS INC   LNTH   35101020  1955.59299
+662         AGIOS PHARMACEUTICALS   AGIO   35201010  1785.10396
+20   PACIFIC BIOSCIENCES OF CALIF   PACB   35203010  4513.43508
+449          BRIDGEBIO PHARMA INC   BBIO   35201010   2455.0458
+448               SCHRODINGER INC   SDGR   35103010  2469.30768
+827     SORRENTO THERAPEUTICS INC   SRNE   35201010   1424.4624
+675          CASSAVA SCIENCES INC   SAVA   35202010   1748.7429
+629              NUVATION BIO INC   NUVB   35202010    1859.698
+242        RELAY THERAPEUTICS INC   RLAY   35201010  3318.03124
+470     TURNING POINT THERAPE INC   TPTX   35201010    2360.196
+915           REPLIMUNE GROUP INC   REPL   35201010   1270.8003
+252               OPKO HEALTH INC    OPK   35201010  3277.25021
+716                   INHIBRX INC   INBX   35201010  1657.49485
+689           MORPHIC HOLDING INC   MORF   35201010  1727.04838
+ 
+ BUSINESS DESCRIPTIONS 
+ 
+Invitae Corporation, a medical genetics company, integrates genetic information into mainstream medicine to improve healthcare of people in the United States, Canada, and internationally. The company offers genetic tests in various clinical areas, including hereditary cancer, cardiology, neurology, pediatrics, oncology, metabolic conditions, and rare diseases; digital health solutions; and health data services. It serves patients, healthcare providers, biopharma companies, and other partners. Th
+ 
+SomaLogic, Inc. operates as a protein biomarker discovery and clinical diagnostics company in the United States. It develops slow off-rate modified aptamers (SOMAmers), which are modified nucleic acid-based protein binding reagents that are specific for their cognate protein; and offers proprietary SomaScan services, which provide multiplex protein detection and quantification of protein levels in complex biological samples. The company’s SOMAmers/SomaScan technology enables researchers to analy
+ 
+Myriad Genetics, Inc., a genetic testing and precision medicine company, develops and commercializes genetic tests in the United States and internationally. The company offers molecular diagnostic tests for use in oncology, and women's and mental health applications. It provides MyRisk Hereditary Cancer Test, a DNA sequencing test for assessing the risks for hereditary cancers; BRACAnalysis CDx Germline Companion Diagnostic Test, a DNA sequencing test to help determine the therapy for patients w
+ 
+Avid Bioservices, Inc., a contract development and manufacturing organization, provides process development and current good manufacturing practices (CGMP) clinical and commercial manufacturing services focused on biopharmaceutical drug substances derived from mammalian cell culture. The company produces monoclonal antibodies and recombinant proteins; and offers services, including CGMP clinical and commercial drug substance manufacturing, bulk packaging, release and stability testing, and regul
+ 
+Editas Medicine, Inc., a clinical stage genome editing company, focuses on developing transformative genomic medicines to treat a range of serious diseases. It develops a proprietary gene editing platform based on CRISPR technology. The company develops EDIT-101, which is in Phase 1/2 clinical trial for Leber Congenital Amaurosis 10 that leads to inherited childhood blindness. It also develops EDIT-102 for the treatment of Usher Syndrome 2A, which is a form of retinitis pigmentosa that also incl
+ 
+Design Therapeutics, Inc. a preclinical-stage biopharmaceutical company, engages in the development of therapies for the treatment of genetic diseases caused by nucleotide repeat expansions. The company’s portfolio of products comprises Friedreich Ataxia, a monogenic, autosomal recessive, progressive multi-system disease that affects organ systems dependent on mitochondrial function, eventually leading to neurological, cardiac, and metabolic dysfunction; and Myotonic Dystrophy Type-1 (DM1), a do
+ 
+Sana Biotechnology, Inc., a biotechnology company, focuses on utilizing engineered cells as medicines. The company develops ex vivo and in vivo cell engineering platforms for various therapeutic areas with unmet treatment needs, including oncology, diabetes, central nervous system disorders, cardiovascular diseases, genetic disorders, and others. Its product candidates include SG295 and SG242 that target CD19+ cancer cells, including non-Hodgkin Lymphoma, chronic lymphocytic leukemia, and acute 
+ 
+Amicus Therapeutics, Inc., a biotechnology company, focuses on discovering, developing, and delivering medicines for rare diseases. Its commercial product and product candidates include Galafold, an oral precision medicine for the treatment of adults with a confirmed diagnosis of Fabry disease and an amenable galactosidase alpha gene variant based on in vitro assay data. It also develops AT-GAA, a novel treatment paradigm for Pompe disease; enzyme replacement therapies for Pompe diseases; CLN3, 
+ 
+Alector, Inc., a clinical stage biopharmaceutical company, develops therapies for the treatment of neurodegeneration diseases. Its products include AL001, a humanized recombinant monoclonal antibody, which is in Phase III clinical trial for the treatment of frontotemporal dementia, Alzheimer’s, Parkinson’s, and amyotrophic lateral sclerosis diseases; and AL101 that is in Phase I clinical trial for the treatment of neurodegenerative diseases, including Alzheimer’s and Parkinson’s diseases. The co
+ 
+Nektar Therapeutics, a biopharmaceutical company, focuses on discovering and developing medicines in areas of unmet medical need in the United States and internationally. The company’s products include Bempegaldesleukin, a CD122-preferential interleukin-2 (IL-2) pathway agonist, which is in phase 3 clinical trial to treat metastatic melanoma, renal cell carcinoma, muscle-invasive bladder cancer, squamous cell carcinoma of the head and neck, and adjuvant melanoma; phase 2 clinical trial for the t
+ 
+Rocket Pharmaceuticals, Inc., together with its subsidiaries, operates as a multi-platform biotechnology company that focuses on developing gene therapies for rare and devastating diseases. It has three clinical-stage ex vivo lentiviral vector programs for fanconi anemia, a genetic defect in the bone marrow that reduces production of blood cells or promotes the production of faulty blood cells; leukocyte adhesion deficiency-I, a genetic disorder that causes the immune system to malfunction; and 
+ 
+Krystal Biotech, Inc., a clinical stage biotechnology company, engages in the field of redosable gene therapy to treat serious rare diseases in the United States. Its lead product candidate is beremagene geperpavec (B-VEC), which is in Phase III clinical study to treat dystrophic epidermolysis bullosa. The company is also involved in developing KB105 that is in Phase I/II clinical study for treating patients with deficient autosomal recessive congenital ichthyosis; KB301, which is in Phase I/II 
+ 
+Lantheus Holdings, Inc. develops, manufactures, and commercializes diagnostic and therapeutic products that assist clinicians in the diagnosis and treatment of heart, cancer, and other diseases worldwide. It provides DEFINITY, a microbubble ultrasound enhancing agent used in ultrasound exams of the heart; TechneLite, a technetium generator for nuclear medicine; Xenon-133 to assess pulmonary function; Neurolite to identify the area within the brain where blood flow has been blocked or reduced due
+ 
+Agios Pharmaceuticals, Inc., a biopharmaceutical company, engages in the discovery and development of medicines in the field of cellular metabolism and adjacent areas of biology. The company offers PYRUKYND (mitapivat) an activator of both wild-type and a variety of mutant pyruvate kinase, PK, enzymes for the treatment of hemolytic anemias; and AG-946 that is in Phase I clinical study for treating hemolytic anemias and other indications. Agios Pharmaceuticals, Inc. was incorporated in 2007 and i
+ 
+Pacific Biosciences of California, Inc. designs, develops, and manufactures sequencing systems to resolve genetically complex problems. The company provides PacBio’s Systems, which conduct, monitor, and analyse biochemical sequencing reactions; consumable products, including single molecule real-time (SMRT) cells; and various reagent kits designed for specific workflow, such as template preparation kit to convert DNA into SMRTbell double-stranded DNA library formats, including molecular biology 
+ 
+BridgeBio Pharma, Inc. engages in the discovery, development, and delivery of various medicines for genetic diseases. The company has a pipeline of 30 development programs that include product candidates ranging from early discovery to late-stage development. Its products in development programs include AG10 and BBP-265, a small molecule stabilizer of transthyretin, or TTR that is in Phase 3 clinical trial for the treatment of TTR amyloidosis-cardiomyopathy, or ATTR-CM; BBP-831, a small molecule
+ 
+Schrödinger, Inc., together with its subsidiaries, provides physics-based software platform that enables discovery of novel molecules for drug development and materials applications. The company operates in two segments, Software and Drug Discovery. The Software segment is focused on selling its software for drug discovery in the life sciences industry, as well as to customers in materials science industries. The Drug Discovery segment focuses on building a portfolio of preclinical and clinical 
+ 
+Sorrento Therapeutics, Inc., a clinical stage and commercial biopharmaceutical company, develops therapies for cancer, autoimmune, inflammatory, viral, and neurodegenerative diseases. It operates through two segments, Sorrento Therapeutics and Scilex. The company provides cancer therapeutic by leveraging its proprietary G-MAB antibody library and targeted delivery modalities, which include chimeric antigen receptor T-cell therapy (CAR-T), dimeric antigen receptor T-cell therapy, and antibody dru
+ 
+Cassava Sciences, Inc., a clinical stage biotechnology company, develops drugs for neurodegenerative diseases. Its lead therapeutic product candidate is simufilam, a small molecule drug, which is completed Phase 2b clinical trial; and investigational diagnostic product candidate is SavaDx, a blood-based biomarker/diagnostic to detect Alzheimer's disease. The company was formerly known as Pain Therapeutics, Inc. and changed its name to Cassava Sciences, Inc. in March 2019. Cassava Sciences, Inc. 
+ 
+Nuvation Bio Inc., a clinical-stage biopharmaceutical company, focuses on the development of therapeutic candidates for oncology. The company’s lead product candidate is NUV-422, a small molecule inhibitor targeting cyclin-dependent kinase (CDK)2, CDK4, and CDK6. It is also developing NUV-868, a selective oral small molecule BET inhibitor that epigenetically regulates proteins that control tumor growth and differentiation; NUV-569, a differentiated oral small molecule selective inhibitor of the 
+ 
+Relay Therapeutics, Inc. operates as a clinical-stage precision medicines company. It engages in transforming the drug discovery process with an initial focus on enhancing small molecule therapeutic discovery in targeted oncology and genetic disease indications. The company’s lead product candidates include RLY-4008, an oral small molecule inhibitor of fibroblast growth factor receptor 2 (FGFR2), which is in a first-in-human clinical trial for patients with advanced or metastatic FGFR2-altered s
+ 
+Turning Point Therapeutics, Inc. operates as a clinical-stage precision oncology biopharmaceutical company that engages in designing and developing therapies that target genetic drivers of cancer. It develops a pipeline of tyrosine kinase inhibitors (TKIs) that targets genetic drivers of cancer in TKI-naïve and TKI-pretreated patients. The company’s lead drug candidate repotrectinib is being evaluated in an ongoing Phase 1/2 trial called TRIDENT-1 for the treatment of patients with ROS1+ advance
+ 
+Replimune Group, Inc., a biotechnology company, develops oncolytic immuno-gene therapies to treat cancer. It uses its proprietary Immunotherapy platform to design and develop product candidates that are intended to activate the immune system against cancer. The company’s lead product candidate is RP1, a selectively replicating version of herpes simplex virus 1, which is in Phase I/II clinical trials for a range of solid tumors; and that is in Phase II clinical trials for patients with cutaneous 
+ 
+OPKO Health, Inc., a healthcare company, engages in the diagnostics and pharmaceuticals businesses in the United States, Ireland, Chile, Spain, Israel, Mexico, and internationally. The company’s Diagnostics segment operates BioReference Laboratories that offers laboratory testing services for the detection, diagnosis, evaluation, monitoring, and treatment of diseases, including esoteric testing, molecular diagnostics, anatomical pathology, genetics, women’s health, and correctional healthcare to
+ 
+Inhibrx, Inc., a clinical-stage biotechnology company, focuses on developing a pipeline of novel biologic therapeutic candidates. The company’s therapeutic candidates include INBRX-109, a tetravalent agonist of death receptor 5, which is in Phase 2 clinical trials to treat cancers, such as chondrosarcoma, mesothelioma, and pancreatic adenocarcinoma; INBRX-105, a tetravalent conditional agonist of programmed death-ligand 1 and a conditional agonist of 4-1BB that is in Phase 1 clinical trials to t
+ 
+Morphic Holding, Inc., a biopharmaceutical company, discovers and develops oral small-molecule integrin therapeutics for the treatment of autoimmune, cardiovascular, metabolic diseases, as well as fibrosis and cancer. Its lead product candidates are MORF-057, an a4ß7-specific integrin inhibitor affecting inflammation that is in Phase 1 clinical trial for the treatment of inflammatory bowel disease; and preclinical trial to treat idiopathic pulmonary fibrosis and fibrosis diseases. The company is
+===== CELL 11 END =====
+NOTEBOOK_EXECUTION_OK
