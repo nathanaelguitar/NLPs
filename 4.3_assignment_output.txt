@@ -1,0 +1,2160 @@
+=== Cell 1 Source ===
+import importlib
+import Base
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler 
+import warnings
+from collections import Counter
+import collections
+import pickle 
+import numpy as np
+from sklearn.decomposition import PCA
+
+
+=== Cell 1 Output ===
+[No output]
+
+=== Cell 2 Source ===
+warnings.filterwarnings('ignore')
+
+importlib.reload(Base)
+d2v = Base.getd2v()
+d2vDf = Base.getd2vDf()
+indGrpNames = Base.getindGrpNames()
+longD = Base.getlongD()
+
+
+=== Cell 2 Output ===
+[No output]
+
+=== Cell 3 Source ===
+warnings.filterwarnings('ignore')
+
+kmDf = d2vDf.copy() # Create a new dataframe kmDf as a copy of d2vDf
+
+Y = d2v.docvecs.index2entity # From the doc2vec model get the tags, which are the clean descriptions 
+
+X = [] 
+for tag in Y:
+    X.append(d2v.docvecs[tag]) # Document vectors from the doc2vec model to matrix
+
+scaler = StandardScaler() # Standardize all the loadings to ~N(0,1)
+scaled_X = scaler.fit_transform(X)
+
+km_model = KMeans(n_clusters=24, max_iter=10000, tol=1e-8) # Train the KMeans model
+km_model.fit(scaled_X)
+pred = km_model.labels_  # Get cluster assignment labels
+
+
+d2vIndGrp = pd.DataFrame( # Merge the industry groups to the dataframe
+    {'cleanDesc': Y,
+     'd2vIndGrp': pred
+    })
+
+kmDf = kmDf.merge(d2vIndGrp, on='cleanDesc', how='inner')
+
+print(kmDf.groupby('d2vIndGrp').size()) # Count the number of companies in each cluster (d2vIndGrp).
+
+
+=== Cell 3 Output ===
+d2vIndGrp
+0      44
+1     121
+2      34
+3      93
+4     125
+5      29
+6      72
+7      36
+8       9
+9      35
+10     16
+11     30
+12     16
+13     80
+14      8
+15     22
+16     46
+17      5
+18     53
+19     31
+20     16
+21      3
+22     63
+23     13
+dtype: int64
+
+=== Cell 4 Source ===
+def wordFrequency(iTxt, mcap):
+    d=dict(Counter(iTxt.split()))
+    k={i:(j/100)*mcap for i,j in d.items()}
+    return k
+
+topicnames = []
+for i in range(0,24):
+    print("")
+    print("")
+    print("####### KMeans Cluster " + str(i) + " ########")
+    smallD2 = kmDf[ kmDf.d2vIndGrp==i ]
+    smallD2['wF'] = smallD2.apply(lambda x:  wordFrequency(x.cleanDesc, x.logmcap), axis=1)
+
+    print(smallD2[['compustat_name','mktcap']].head(n=10))
+    names = []
+    for ii, n in smallD2.head(n=5).iterrows():
+        names.append(n.compustat_name)
+
+    wF = smallD2['wF'].to_list() 
+    counter = collections.Counter()
+    for d in wF: 
+        counter.update(d)
+    result = pd.DataFrame(dict(counter).items(), columns=['word', 'importance'])
+    result = result.sort_values(by='importance',ascending=False)
+    words = []
+    for ii, n in result.head(n=5).iterrows():
+        words.append(n.word)
+    topicnames.append([i, names, words])
+    print(words)
+
+topicnames = pd.DataFrame(topicnames, columns=['d2vIndGrp','top5companies','top5words'])
+print(topicnames)
+
+
+=== Cell 4 Output ===
+
+
+####### KMeans Cluster 0 ########
+                   compustat_name      mktcap
+12        APELLIS PHARMACEUTICALS  4541.00760
+41            KODIAK SCIENCES INC  4384.56726
+63   INTRA-CELLULAR THERAPIES INC  4263.77342
+138        KARUNA THERPEUTICS INC  3880.74400
+153  ZENTALIS PHARMACEUTICALS INC  3808.42236
+169    ACADIA PHARMACEUTICALS INC  3752.04504
+252               OPKO HEALTH INC  3277.25021
+262                    INSMED INC  3224.45328
+264       AMICUS THERAPEUTICS INC  3218.28045
+356         ARCUS BIOSCIENCES INC  2842.97703
+['treatment', 'patient', 'patent', 'study', 'phase']
+
+
+####### KMeans Cluster 1 ########
+                compustat_name      mktcap
+9          MERITAGE HOMES CORP  4554.18066
+24  HANNON ARMSTRONG SUST INFR  4498.94528
+28       PARK HOTELS & RESORTS  4464.72352
+29          COHEN & STEERS INC  4464.25507
+32     RYAN SPECIALITY GRP INC  4434.62640
+56  FIRST NATL OF NEBRASKA INC  4296.43203
+57   TAYLOR MORRISON HOME CORP  4296.26936
+59          COLONY CAPITAL INC  4282.86950
+78        UMPQUA HOLDINGS CORP  4167.88424
+81                 ONE GAS INC  4157.89292
+['insurance', 'home', 'loan', 'investment', 'care']
+
+
+####### KMeans Cluster 2 ########
+                   compustat_name      mktcap
+44                     BUMBLE INC  4376.13412
+66              TTEC HOLDINGS INC  4254.85395
+97                SQUARESPACE INC  4095.60300
+104              SHUTTERSTOCK INC  4052.55312
+117                  CARGURUS INC  3974.73420
+131            CVENT HOLDING CORP  3930.76674
+149           NEWEGG COMMERCE INC  3823.88565
+165               TRIPADVISOR INC  3766.81406
+218  INTEGRAL AD SCIENCE HOL CORP  3419.02961
+250                       OLO INC  3280.98784
+['brand', 'user', 'event', 'content', 'online']
+
+
+####### KMeans Cluster 3 ########
+              compustat_name      mktcap
+0       RANGE RESOURCES CORP  4632.14485
+2      ANTERO MIDSTREAM CORP  4622.23872
+7              SEABOARD CORP  4568.54661
+16      JETBLUE AIRWAYS CORP  4528.76144
+23          BLACK HILLS CORP  4503.77740
+31    ORMAT TECHNOLOGIES INC  4440.95860
+33          RYDER SYSTEM INC  4425.91399
+38  FRANKLIN ELECTRIC CO INC  4390.51536
+53        ENVIVA PARTNERS LP  4297.23966
+75              AMERESCO INC  4198.96496
+['energy', 'project', 'aircraft', 'transportation', 'natural_gas']
+
+
+####### KMeans Cluster 4 ########
+                  compustat_name      mktcap
+4     SERVISFIRST BANCSHARES INC  4604.68234
+48          HANCOCK WHITNEY CORP  4343.03652
+86        BRIGHTHOUSE FINANL INC  4134.62420
+92   PENNYMAC FINANCIAL SERVICES  4119.04362
+111    COMMUNITY BANK SYSTEM INC  4016.78088
+115          HOME BANCSHARES INC  3984.31745
+118            NEWMARK GROUP INC  3974.40450
+123   JACKSON FINANCIAL INC -SPN  3951.42912
+125      SILVERGATE CAPITAL CORP  3948.34440
+126             MDC HOLDINGS INC  3946.06440
+['loan', 'bank', 'banking', 'mortgage', 'insurance']
+
+
+####### KMeans Cluster 5 ########
+                   compustat_name      mktcap
+10                    PROGYNY INC  4553.15050
+13                    CERTARA INC  4538.07718
+45                  LHC GROUP INC  4346.21133
+127  SELECT MEDICAL HOLDINGS CORP  3943.86300
+179                   CORVEL CORP  3685.76000
+197         LIFESTAN HLTH GRP INC  3561.89848
+207      IRHYTHM TECHNOLOGIES INC  3463.14594
+233          1LIFE HEALTHCARE INC  3353.91973
+343          FIRST ADVANTAGE CORP  2910.74000
+362                MULTIPLAN CORP  2827.56268
+['care', 'patient', 'provider', 'clinical', 'healthcare']
+
+
+####### KMeans Cluster 6 ########
+                  compustat_name      mktcap
+17   SPIRIT AEROSYSTEMS HOLDINGS  4526.47523
+34                  REXNORD CORP  4417.14000
+36             COMMERCIAL METALS  4412.68255
+47                   HEXCEL CORP  4345.70920
+70         DIVERSEY HOLDINGS LTD  4225.00661
+82   INSTALLED BLDG PRODUCTS INC  4150.66204
+129               LCI INDUSTRIES  3939.30251
+155   ALLISON TRANSMISSION HLDGS  3789.85100
+163              HILLENBRAND INC  3768.44316
+178          TRONOX HOLDINGS PLC  3697.42401
+['equipment', 'industrial', 'brand', 'construction', 'building']
+
+
+####### KMeans Cluster 7 ########
+                   compustat_name      mktcap
+22                       FIGS INC  4504.90248
+43                FOOT LOCKER INC  4379.05584
+60                   CARTER'S INC  4278.16452
+61     AMERN EAGLE OUTFITTERS INC  4269.50904
+72   MADISON SQUARE GARDEN SPORTS  4207.56687
+120     NATIONAL VISION HLDGS INC  3968.82099
+134        ACUSHNET HOLDINGS CORP  3908.28040
+136        ACADEMY SPO AND OU INC  3886.68650
+183        BOOT BARN HOLDINGS INC  3643.38745
+187                 NORDSTROM INC  3603.66006
+['store', 'brand', 'restaurant', 'apparel', 'merchandise']
+
+
+####### KMeans Cluster 8 ########
+                  compustat_name      mktcap
+51          MATADOR RESOURCES CO  4332.04512
+147                  DENBURY INC  3838.84398
+232         ENLINK MIDSTREAM LLC  3362.03062
+582        PLAINS GP HOLDINGS LP  1968.59988
+631  DELEK LOGISTICS PARTNERS LP  1857.00307
+679     HOLLY ENERGY PARTNERS LP  1738.70560
+755            KOSMOS ENERGY LTD  1563.53594
+758               PBF ENERGY INC  1559.59062
+892          GENESIS ENERGY  -LP  1312.39269
+['pipeline', 'crude_oil', 'refinery', 'terminal', 'natural_gas']
+
+
+####### KMeans Cluster 9 ########
+                   compustat_name      mktcap
+49                    ARVINAS INC  4342.90608
+54      IONIS PHARMACEUTICALS INC  4297.02030
+150              CYTOKINETICS INC  3823.38714
+242        RELAY THERAPEUTICS INC  3318.03124
+256        KYMERA THERAPEUTIC INC  3262.56063
+297  SPRINGWORKS THERAPEUTICS INC  3052.45302
+316   IOVANCE BIOTHERAPEUTICS INC  2995.20191
+339         SANA BIOTCHNOLOGY INC  2923.13484
+388           TG THERAPEUTICS INC  2715.91700
+417     LIGAND PHARMACEUTICAL INC  2581.33552
+['patient', 'patent', 'treatment', 'cell', 'phase']
+
+
+####### KMeans Cluster 10 ########
+                   compustat_name      mktcap
+30                      CHEGG INC  4449.87290
+58                   DUOLINGO INC  4286.31345
+142                 BLACKBAUD INC  3860.77934
+173                    NELNET INC  3735.38088
+213    GRAND CANYON EDUCATION INC  3434.74254
+230      INSTRUCTURE HOLDINGS INC  3367.36752
+257      POWERSCHOOL HOLDINGS INC  3258.52362
+273    WILEY (JOHN) & SONS  -CL A  3186.69441
+391               UDEMY INC -REDH  2714.98530
+553  HOUGHTON MIFFLIN HARCOURT CO  2055.66410
+['student', 'learning', 'school', 'online', 'education']
+
+
+####### KMeans Cluster 11 ########
+                   compustat_name      mktcap
+14         HAWAIIAN ELECTRIC INDS  4536.40650
+15    SHELL MIDSTREAM PARTNERS LP  4530.70080
+27             EQUITRANS MID CORP  4472.06034
+39   CASELLA WASTE SYS INC  -CL A  4390.41716
+69     SOUTHWEST GAS HOLDINGS INC  4229.96925
+128     NEW JERSEY RESOURCES CORP  3939.91230
+132             PNM RESOURCES INC  3914.93435
+158                    MATSON INC  3784.14096
+195                    KIRBY CORP  3571.79562
+206                    ALLETE INC  3488.15220
+['natural_gas', 'pipeline', 'energy', 'storage', 'capacity']
+
+
+####### KMeans Cluster 12 ########
+                   compustat_name      mktcap
+20   PACIFIC BIOSCIENCES OF CALIF  4513.43508
+74                NEOGENOMICS INC  4200.92264
+122         ADAPTIVE BIOTECH CORP  3960.16392
+146         TWIST BIOSCIENCE CORP  3841.02048
+313          FULGENT GENETICS INC  3000.70029
+338                  VERACYTE INC  2926.97160
+384                  CRYOPORT INC  2739.33432
+448               SCHRODINGER INC  2469.30768
+462                    CAREDX INC  2401.43496
+504           MYRIAD GENETICS INC  2203.99800
+['test', 'patient', 'cell', 'patent', 'clinical']
+
+
+####### KMeans Cluster 13 ########
+                  compustat_name      mktcap
+3                  TERADATA CORP  4607.99500
+37             JOBY AVIATION INC  4408.42620
+64                PERFICIENT INC  4258.55402
+93                    SWITCH INC  4114.93792
+98                     AVNET INC  4090.92306
+103    KYNDRYL HOLDINGS INC -SPN  4056.86160
+106          XEROX HOLDINGS CORP  4041.51168
+121                  ENOVIX CORP  3962.31088
+124  APPLIED INDUSTRIAL TECH INC  3949.53390
+167         RESIDEO TECHNOLOGIES  3758.36758
+['software', 'device', 'vehicle', 'cloud', 'power']
+
+
+####### KMeans Cluster 14 ########
+                  compustat_name      mktcap
+221         RED ROCK RESORTS INC  3400.22311
+295                    ST JOE CO  3064.86015
+355              CEDAR FAIR  -LP  2845.51052
+461      MADISON SQUARE GARD ENT  2405.06528
+546                  BALLYS CORP  2069.05578
+592           EVERI HOLDINGS INC  1942.40165
+809     GOLDEN ENTERTAINMENT INC  1468.25021
+846  MONARCH CASINO & RESORT INC  1385.52720
+['gaming', 'casino', 'park', 'game', 'entertainment']
+
+
+####### KMeans Cluster 15 ########
+                compustat_name      mktcap
+6            INARI MEDICAL INC  4582.21035
+46           STAAR SURGICAL CO  4345.88000
+84                 CONMED CORP  4146.05472
+201  MERIT MEDICAL SYSTEMS INC  3517.33340
+268               ATRICURE INC  3193.65196
+360                 NEVRO CORP  2829.66728
+363      INTEGER HOLDINGS CORP  2826.09621
+390               NUVASIVE INC  2715.10528
+393           HAEMONETICS CORP  2710.60920
+402     PACIRA BIOSCIENCES INC  2680.21248
+['patient', 'device', 'blood', 'procedure', 'surgical']
+
+
+####### KMeans Cluster 16 ########
+                   compustat_name      mktcap
+35           BWX TECHNOLOGIES INC  4414.63176
+77            VIAVI SOLUTIONS INC  4188.02732
+80                       AAON INC  4164.35604
+99                    APERGY CORP  4083.83470
+112                   NIKOLA CORP  4015.95495
+114                FLOWSERVE CORP  3986.20080
+145             BLOOM ENERGY CORP  3848.47377
+191                FORMFACTOR INC  3575.62404
+210  VIRGIN GALACTIC HOLDINGS INC  3452.18718
+212                  PARSONS CORP  3440.98170
+['power', 'component', 'vehicle', 'equipment', 'battery']
+
+
+####### KMeans Cluster 17 ########
+              compustat_name      mktcap
+159        MADDEN STEVEN LTD  3782.33271
+222        INTER PARFUMS INC  3392.36460
+349     URBAN OUTFITTERS INC  2873.87424
+466     WOLVERINE WORLD WIDE  2373.05089
+871  G-III APPAREL GROUP LTD  1342.41952
+['brand', 'store', 'footwear', 'woman', 'fragrance']
+
+
+####### KMeans Cluster 18 ########
+             compustat_name      mktcap
+1                  ANGI INC  4627.03953
+11            INSPERITY INC  4547.47122
+19          Q2 HOLDINGS INC  4513.54248
+40   VICTORY CPTL HLDGS INC  4384.76896
+42               UPWORK INC  4380.47344
+50            ENVESTNET INC  4335.45496
+76             APPFOLIO INC  4196.90808
+85          BLOCK H & R INC  4137.81924
+91               KORN FERRY  4120.77222
+101       ACI WORLDWIDE INC  4079.54020
+['client', 'payment', 'transaction', 'software', 'loan']
+
+
+####### KMeans Cluster 19 ########
+             compustat_name      mktcap
+18        JAMF HOLDING CORP  4524.90045
+21    SAILPOINT TECHNO HLDG  4508.38176
+55       DATTO HOLDING CORP  4296.97355
+67   ALARM.COM HOLDINGS INC  4245.58860
+71             MANDIANT INC  4209.37198
+79               FASTLY INC  4165.37500
+100             ALTERYX INC  4082.41900
+137                 BOX INC  3883.97700
+248               C3.AI INC  3282.40625
+280   COMMVAULT SYSTEMS INC  3136.48028
+['security', 'cloud', 'software', 'user', 'enterprise']
+
+
+####### KMeans Cluster 20 ########
+                   compustat_name       mktcap
+94                      TEGNA INC  4106.975360
+157                     SONOS INC  3788.444200
+172     WORLD WRESTLING ENTMT INC  3740.810780
+181            VIZIO HOLDING CORP  3645.631470
+307             QURATE RETAIL INC  3015.246800
+311               IHEARTMEDIA INC  3002.302800
+406     LIBERTY LATIN AMERICA LTD  2654.041713
+571  SINCLAIR BROADCAST GP  -CL A  1996.469340
+579                    XPERI CORP  1976.662300
+595         CINEMARK HOLDINGS INC  1928.371120
+['content', 'medium', 'television', 'programming', 'advertising']
+
+
+####### KMeans Cluster 21 ########
+                   compustat_name      mktcap
+283            GRAHAM HOLDINGS CO  3119.54799
+808  ADTALEM GLOBAL EDUCATION INC  1471.05340
+830       STRATEGIC EDUCATION INC  1422.86400
+['student', 'degree', 'kaplan', 'course', 'online']
+
+
+####### KMeans Cluster 22 ########
+                compustat_name      mktcap
+5      HERBALIFE NUTRITION LTD  4589.60369
+8        LANCASTER COLONY CORP  4558.96800
+25                LESLIE'S INC  4494.97412
+26       SKYLINE CHAMPION CORP  4485.98502
+52      SPECTRUM BRND HLDG INC  4325.74472
+62         SANDERSON FARMS INC  4264.71452
+65           FULLER (H. B.) CO  4256.55000
+68      NATIONAL BEVERAGE CORP  4230.28626
+73  SENSIENT TECHNOLOGIES CORP  4205.12156
+87                FRESHPET INC  4133.76530
+['brand', 'food', 'store', 'retailer', 'home']
+
+
+####### KMeans Cluster 23 ########
+                compustat_name      mktcap
+90             BEYOND MEAT INC  4126.64796
+102  SIMPLY GOOD FOODS COMPANY  4066.50211
+109   HAIN CELESTIAL GROUP INC  4030.09641
+236                 TILRAY INC  3336.31146
+276           KRISPY KREME INC  3164.38892
+306     J & J SNACK FOODS CORP  3015.29844
+364            SHAKE SHACK INC  2824.34240
+396    CENTRAL GARDEN & PET CO  2691.15173
+572              B&G FOODS INC  1994.28481
+624        MGP INGREDIENTS INC  1866.72036
+['brand', 'food', 'protein', 'frozen', 'plant']
+    d2vIndGrp                                      top5companies  \
+0           0  [APELLIS PHARMACEUTICALS, KODIAK SCIENCES INC,...   
+1           1  [MERITAGE HOMES CORP, HANNON ARMSTRONG SUST IN...   
+2           2  [BUMBLE INC, TTEC HOLDINGS INC, SQUARESPACE IN...   
+3           3  [RANGE RESOURCES CORP, ANTERO MIDSTREAM CORP, ...   
+4           4  [SERVISFIRST BANCSHARES INC, HANCOCK WHITNEY C...   
+5           5  [PROGYNY INC, CERTARA INC, LHC GROUP INC, SELE...   
+6           6  [SPIRIT AEROSYSTEMS HOLDINGS, REXNORD CORP, CO...   
+7           7  [FIGS INC, FOOT LOCKER INC, CARTER'S INC, AMER...   
+8           8  [MATADOR RESOURCES CO, DENBURY INC, ENLINK MID...   
+9           9  [ARVINAS INC, IONIS PHARMACEUTICALS INC, CYTOK...   
+10         10  [CHEGG INC, DUOLINGO INC, BLACKBAUD INC, NELNE...   
+11         11  [HAWAIIAN ELECTRIC INDS, SHELL MIDSTREAM PARTN...   
+12         12  [PACIFIC BIOSCIENCES OF CALIF, NEOGENOMICS INC...   
+13         13  [TERADATA CORP, JOBY AVIATION INC, PERFICIENT ...   
+14         14  [RED ROCK RESORTS INC, ST JOE CO, CEDAR FAIR  ...   
+15         15  [INARI MEDICAL INC, STAAR SURGICAL CO, CONMED ...   
+16         16  [BWX TECHNOLOGIES INC, VIAVI SOLUTIONS INC, AA...   
+17         17  [MADDEN STEVEN LTD, INTER PARFUMS INC, URBAN O...   
+18         18  [ANGI INC, INSPERITY INC, Q2 HOLDINGS INC, VIC...   
+19         19  [JAMF HOLDING CORP, SAILPOINT TECHNO HLDG, DAT...   
+20         20  [TEGNA INC, SONOS INC, WORLD WRESTLING ENTMT I...   
+21         21  [GRAHAM HOLDINGS CO, ADTALEM GLOBAL EDUCATION ...   
+22         22  [HERBALIFE NUTRITION LTD, LANCASTER COLONY COR...   
+23         23  [BEYOND MEAT INC, SIMPLY GOOD FOODS COMPANY, H...   
+
+                                            top5words  
+0          [treatment, patient, patent, study, phase]  
+1           [insurance, home, loan, investment, care]  
+2               [brand, user, event, content, online]  
+3   [energy, project, aircraft, transportation, na...  
+4          [loan, bank, banking, mortgage, insurance]  
+5     [care, patient, provider, clinical, healthcare]  
+6   [equipment, industrial, brand, construction, b...  
+7    [store, brand, restaurant, apparel, merchandise]  
+8   [pipeline, crude_oil, refinery, terminal, natu...  
+9           [patient, patent, treatment, cell, phase]  
+10     [student, learning, school, online, education]  
+11  [natural_gas, pipeline, energy, storage, capac...  
+12            [test, patient, cell, patent, clinical]  
+13          [software, device, vehicle, cloud, power]  
+14        [gaming, casino, park, game, entertainment]  
+15      [patient, device, blood, procedure, surgical]  
+16    [power, component, vehicle, equipment, battery]  
+17         [brand, store, footwear, woman, fragrance]  
+18     [client, payment, transaction, software, loan]  
+19      [security, cloud, software, user, enterprise]  
+20  [content, medium, television, programming, adv...  
+21          [student, degree, kaplan, course, online]  
+22               [brand, food, store, retailer, home]  
+23              [brand, food, protein, frozen, plant]  
+
+=== Cell 5 Source ===
+for i, n in indGrpNames.iterrows():
+    print("")
+    print("")
+    print("####### GICS Industry Group " + str(n.gicsIndGrp) + ": "+n.indGrp+" ########")
+    print()
+    ntopics = kmDf[kmDf.gicsIndGrp==n.gicsIndGrp].groupby(['d2vIndGrp']).size().reset_index()
+    ntopics.columns = ['d2vIndGrp','n']
+    ntopics['pct'] = round(100.0*ntopics['n'] / ntopics['n'].sum(),1 )
+    ntopics = ntopics.merge(topicnames, on='d2vIndGrp')
+    ntopics = ntopics.sort_values(by='n',ascending=False)
+    print(ntopics[['d2vIndGrp','n','pct','top5words']])
+
+
+=== Cell 5 Output ===
+
+
+####### GICS Industry Group 1010: Energy ########
+
+   d2vIndGrp   n   pct                                          top5words
+1          3  30  54.5  [energy, project, aircraft, transportation, na...
+3         11  10  18.2  [natural_gas, pipeline, energy, storage, capac...
+2          8   9  16.4  [pipeline, crude_oil, refinery, terminal, natu...
+4         16   4   7.3    [power, component, vehicle, equipment, battery]
+0          1   2   3.6          [insurance, home, loan, investment, care]
+
+
+####### GICS Industry Group 1510: Materials ########
+
+   d2vIndGrp   n   pct                                          top5words
+2          6  24  54.5  [equipment, industrial, brand, construction, b...
+4         22   8  18.2               [brand, food, store, retailer, home]
+1          3   6  13.6  [energy, project, aircraft, transportation, na...
+0          1   3   6.8          [insurance, home, loan, investment, care]
+3         11   3   6.8  [natural_gas, pipeline, energy, storage, capac...
+
+
+####### GICS Industry Group 2010: Capital Goods ########
+
+   d2vIndGrp   n   pct                                          top5words
+2          6  35  33.0  [equipment, industrial, brand, construction, b...
+1          3  26  24.5  [energy, project, aircraft, transportation, na...
+4         16  21  19.8    [power, component, vehicle, equipment, battery]
+3         13  17  16.0          [software, device, vehicle, cloud, power]
+0          1   5   4.7          [insurance, home, loan, investment, care]
+5         22   2   1.9               [brand, food, store, retailer, home]
+
+
+####### GICS Industry Group 2020: Commercial & Professional Services ########
+
+   d2vIndGrp  n   pct                                          top5words
+0          1  9  29.0          [insurance, home, loan, investment, care]
+7         18  8  25.8     [client, payment, transaction, software, loan]
+9         22  3   9.7               [brand, food, store, retailer, home]
+2          5  2   6.5    [care, patient, provider, clinical, healthcare]
+3          6  2   6.5  [equipment, industrial, brand, construction, b...
+5         10  2   6.5     [student, learning, school, online, education]
+8         19  2   6.5      [security, cloud, software, user, enterprise]
+1          3  1   3.2  [energy, project, aircraft, transportation, na...
+4          7  1   3.2   [store, brand, restaurant, apparel, merchandise]
+6         11  1   3.2  [natural_gas, pipeline, energy, storage, capac...
+
+
+####### GICS Industry Group 2030: Transportation ########
+
+   d2vIndGrp   n   pct                                          top5words
+1          3  14  70.0  [energy, project, aircraft, transportation, na...
+0          1   2  10.0          [insurance, home, loan, investment, care]
+2         11   2  10.0  [natural_gas, pipeline, energy, storage, capac...
+3         13   2  10.0          [software, device, vehicle, cloud, power]
+
+
+####### GICS Industry Group 2510: Automobiles & Components ########
+
+   d2vIndGrp  n   pct                                          top5words
+0          6  7  50.0  [equipment, industrial, brand, construction, b...
+1         13  4  28.6          [software, device, vehicle, cloud, power]
+3         22  2  14.3               [brand, food, store, retailer, home]
+2         16  1   7.1    [power, component, vehicle, equipment, battery]
+
+
+####### GICS Industry Group 2520: Consumer Durables & Apparel ########
+
+   d2vIndGrp  n   pct                                          top5words
+0          1  6  19.4          [insurance, home, loan, investment, care]
+2          4  5  16.1         [loan, bank, banking, mortgage, insurance]
+4          7  5  16.1   [store, brand, restaurant, apparel, merchandise]
+3          6  3   9.7  [equipment, industrial, brand, construction, b...
+6         17  3   9.7         [brand, store, footwear, woman, fragrance]
+7         20  3   9.7  [content, medium, television, programming, adv...
+8         22  3   9.7               [brand, food, store, retailer, home]
+1          2  1   3.2              [brand, user, event, content, online]
+5         13  1   3.2          [software, device, vehicle, cloud, power]
+9         23  1   3.2              [brand, food, protein, frozen, plant]
+
+
+####### GICS Industry Group 2530: Consumer Services ########
+
+   d2vIndGrp  n   pct                                         top5words
+3         10  9  23.1    [student, learning, school, online, education]
+2          7  7  17.9  [store, brand, restaurant, apparel, merchandise]
+5         14  6  15.4       [gaming, casino, park, game, entertainment]
+8         22  5  12.8              [brand, food, store, retailer, home]
+0          1  4  10.3         [insurance, home, loan, investment, care]
+7         21  3   7.7         [student, degree, kaplan, course, online]
+9         23  2   5.1             [brand, food, protein, frozen, plant]
+1          2  1   2.6             [brand, user, event, content, online]
+4         13  1   2.6         [software, device, vehicle, cloud, power]
+6         18  1   2.6    [client, payment, transaction, software, loan]
+
+
+####### GICS Industry Group 2550: Retailing ########
+
+   d2vIndGrp   n   pct                                          top5words
+3          7  18  46.2   [store, brand, restaurant, apparel, merchandise]
+6         22   7  17.9               [brand, food, store, retailer, home]
+0          1   6  15.4          [insurance, home, loan, investment, care]
+1          2   4  10.3              [brand, user, event, content, online]
+2          6   1   2.6  [equipment, industrial, brand, construction, b...
+4         17   1   2.6         [brand, store, footwear, woman, fragrance]
+5         20   1   2.6  [content, medium, television, programming, adv...
+7         23   1   2.6              [brand, food, protein, frozen, plant]
+
+
+####### GICS Industry Group 3010: Food & Staples Retailing ########
+
+   d2vIndGrp  n   pct                                         top5words
+1         22  6  75.0              [brand, food, store, retailer, home]
+0          7  2  25.0  [store, brand, restaurant, apparel, merchandise]
+
+
+####### GICS Industry Group 3020: Food, Beverage & Tobacco ########
+
+   d2vIndGrp   n   pct                                          top5words
+1         22  15  65.2               [brand, food, store, retailer, home]
+2         23   7  30.4              [brand, food, protein, frozen, plant]
+0          3   1   4.3  [energy, project, aircraft, transportation, na...
+
+
+####### GICS Industry Group 3030: Household & Personal Products ########
+
+   d2vIndGrp  n   pct                                   top5words
+2         22  9  75.0        [brand, food, store, retailer, home]
+0          1  1   8.3   [insurance, home, loan, investment, care]
+1         17  1   8.3  [brand, store, footwear, woman, fragrance]
+3         23  1   8.3       [brand, food, protein, frozen, plant]
+
+
+####### GICS Industry Group 3510: Health Care Equipment & Services ########
+
+    d2vIndGrp   n   pct                                         top5words
+2           5  26  34.2   [care, patient, provider, clinical, healthcare]
+1           1  19  25.0         [insurance, home, loan, investment, care]
+6          15  19  25.0     [patient, device, blood, procedure, surgical]
+4          12   3   3.9           [test, patient, cell, patent, clinical]
+5          13   2   2.6         [software, device, vehicle, cloud, power]
+7          16   2   2.6   [power, component, vehicle, equipment, battery]
+0           0   1   1.3        [treatment, patient, patent, study, phase]
+3           7   1   1.3  [store, brand, restaurant, apparel, merchandise]
+8          18   1   1.3    [client, payment, transaction, software, loan]
+9          19   1   1.3     [security, cloud, software, user, enterprise]
+10         22   1   1.3              [brand, food, store, retailer, home]
+
+
+####### GICS Industry Group 3520: Pharmaceuticals, Biotechnology & Life Sciences ########
+
+   d2vIndGrp   n   pct                                        top5words
+0          0  43  43.0       [treatment, patient, patent, study, phase]
+3          9  35  35.0        [patient, patent, treatment, cell, phase]
+4         12  13  13.0          [test, patient, cell, patent, clinical]
+1          1   3   3.0        [insurance, home, loan, investment, care]
+5         15   2   2.0    [patient, device, blood, procedure, surgical]
+6         22   2   2.0             [brand, food, store, retailer, home]
+2          5   1   1.0  [care, patient, provider, clinical, healthcare]
+7         23   1   1.0            [brand, food, protein, frozen, plant]
+
+
+####### GICS Industry Group 4010: Banks ########
+
+   d2vIndGrp   n   pct                                       top5words
+1          4  86  87.8      [loan, bank, banking, mortgage, insurance]
+0          1  10  10.2       [insurance, home, loan, investment, care]
+2         18   2   2.0  [client, payment, transaction, software, loan]
+
+
+####### GICS Industry Group 4020: Diversified Financials ########
+
+   d2vIndGrp   n   pct                                       top5words
+1          4  20  47.6      [loan, bank, banking, mortgage, insurance]
+3         18  12  28.6  [client, payment, transaction, software, loan]
+0          1   9  21.4       [insurance, home, loan, investment, care]
+2         10   1   2.4  [student, learning, school, online, education]
+
+
+####### GICS Industry Group 4030: Insurance ########
+
+   d2vIndGrp   n   pct                                         top5words
+0          1  10  50.0         [insurance, home, loan, investment, care]
+1          4   9  45.0        [loan, bank, banking, mortgage, insurance]
+2          7   1   5.0  [store, brand, restaurant, apparel, merchandise]
+
+
+####### GICS Industry Group 4510: Software & Services ########
+
+   d2vIndGrp   n   pct                                          top5words
+6         19  26  27.7      [security, cloud, software, user, enterprise]
+5         18  25  26.6     [client, payment, transaction, software, loan]
+4         13  17  18.1          [software, device, vehicle, cloud, power]
+1          2  15  16.0              [brand, user, event, content, online]
+0          1   8   8.5          [insurance, home, loan, investment, care]
+3         10   2   2.1     [student, learning, school, online, education]
+2          3   1   1.1  [energy, project, aircraft, transportation, na...
+
+
+####### GICS Industry Group 4520: Technology Hardware & Equipment ########
+
+   d2vIndGrp   n   pct                                          top5words
+1         13  23  59.0          [software, device, vehicle, cloud, power]
+3         16  10  25.6    [power, component, vehicle, equipment, battery]
+0          1   3   7.7          [insurance, home, loan, investment, care]
+2         15   1   2.6      [patient, device, blood, procedure, surgical]
+4         19   1   2.6      [security, cloud, software, user, enterprise]
+5         20   1   2.6  [content, medium, television, programming, adv...
+
+
+####### GICS Industry Group 4530: Semiconductors & Semiconductor Equipment ########
+
+   d2vIndGrp  n   pct                                          top5words
+1         16  8  50.0    [power, component, vehicle, equipment, battery]
+0         13  7  43.8          [software, device, vehicle, cloud, power]
+2         20  1   6.2  [content, medium, television, programming, adv...
+
+
+####### GICS Industry Group 5010: Telecommunication Services ########
+
+   d2vIndGrp  n   pct                                          top5words
+3         13  4  40.0          [software, device, vehicle, cloud, power]
+2          3  2  20.0  [energy, project, aircraft, transportation, na...
+0          1  1  10.0          [insurance, home, loan, investment, care]
+1          2  1  10.0              [brand, user, event, content, online]
+4         19  1  10.0      [security, cloud, software, user, enterprise]
+5         20  1  10.0  [content, medium, television, programming, adv...
+
+
+####### GICS Industry Group 5020: Media & Entertainment ########
+
+   d2vIndGrp   n   pct                                          top5words
+1          2  12  36.4              [brand, user, event, content, online]
+7         20   9  27.3  [content, medium, television, programming, adv...
+0          1   5  15.2          [insurance, home, loan, investment, care]
+3         10   2   6.1     [student, learning, school, online, education]
+4         13   2   6.1          [software, device, vehicle, cloud, power]
+2          7   1   3.0   [store, brand, restaurant, apparel, merchandise]
+5         14   1   3.0        [gaming, casino, park, game, entertainment]
+6         18   1   3.0     [client, payment, transaction, software, loan]
+
+
+####### GICS Industry Group 5510: Utilities ########
+
+   d2vIndGrp   n   pct                                          top5words
+2         11  14  53.8  [natural_gas, pipeline, energy, storage, capac...
+1          3  10  38.5  [energy, project, aircraft, transportation, na...
+0          1   2   7.7          [insurance, home, loan, investment, care]
+
+
+####### GICS Industry Group 6010: Real Estate ########
+
+   d2vIndGrp   n   pct                                          top5words
+0          1  13  54.2          [insurance, home, loan, investment, care]
+2          4   5  20.8         [loan, bank, banking, mortgage, insurance]
+4         18   3  12.5     [client, payment, transaction, software, loan]
+1          3   2   8.3  [energy, project, aircraft, transportation, na...
+3         14   1   4.2        [gaming, casino, park, game, entertainment]
+
+=== Cell 6 Source ===
+for c in range(0,24):
+    print("")
+    print("")
+    print("####### KMeans Cluster " + str(c) + ": "+str(topicnames.top5words.iloc[c])+" ########")
+    print()
+    ntopics = kmDf[kmDf.d2vIndGrp==c].groupby(['gicsIndGrp']).size().reset_index()
+    ntopics.columns = ['gicsIndGrp','n']
+    ntopics['pct'] = round(100.0*ntopics['n'] / ntopics['n'].sum(),1 )
+    ntopics = ntopics.merge(indGrpNames, on='gicsIndGrp')
+    ntopics = ntopics.sort_values(by='n',ascending=False)
+    print(ntopics[['gicsIndGrp','n','pct','indGrp']])
+    
+
+=== Cell 6 Output ===
+
+
+####### KMeans Cluster 0: ['treatment', 'patient', 'patent', 'study', 'phase'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+1        3520  43  97.7  Pharmaceuticals, Biotechnology & Life Sciences
+0        3510   1   2.3                Health Care Equipment & Services
+
+
+####### KMeans Cluster 1: ['insurance', 'home', 'loan', 'investment', 'care'] ########
+
+    gicsIndGrp   n   pct                                          indGrp
+9         3510  19  15.7                Health Care Equipment & Services
+19        6010  13  10.7                                     Real Estate
+13        4030  10   8.3                                       Insurance
+11        4010  10   8.3                                           Banks
+3         2020   9   7.4              Commercial & Professional Services
+12        4020   9   7.4                          Diversified Financials
+14        4510   8   6.6                             Software & Services
+5         2520   6   5.0                     Consumer Durables & Apparel
+7         2550   6   5.0                                       Retailing
+2         2010   5   4.1                                   Capital Goods
+17        5020   5   4.1                           Media & Entertainment
+6         2530   4   3.3                               Consumer Services
+15        4520   3   2.5                 Technology Hardware & Equipment
+10        3520   3   2.5  Pharmaceuticals, Biotechnology & Life Sciences
+1         1510   3   2.5                                       Materials
+4         2030   2   1.7                                  Transportation
+18        5510   2   1.7                                       Utilities
+0         1010   2   1.7                                          Energy
+8         3030   1   0.8                   Household & Personal Products
+16        5010   1   0.8                      Telecommunication Services
+
+
+####### KMeans Cluster 2: ['brand', 'user', 'event', 'content', 'online'] ########
+
+   gicsIndGrp   n   pct                       indGrp
+3        4510  15  44.1          Software & Services
+5        5020  12  35.3        Media & Entertainment
+2        2550   4  11.8                    Retailing
+0        2520   1   2.9  Consumer Durables & Apparel
+1        2530   1   2.9            Consumer Services
+4        5010   1   2.9   Telecommunication Services
+
+
+####### KMeans Cluster 3: ['energy', 'project', 'aircraft', 'transportation', 'natural_gas'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+0        1010  30  32.3                              Energy
+2        2010  26  28.0                       Capital Goods
+4        2030  14  15.1                      Transportation
+8        5510  10  10.8                           Utilities
+1        1510   6   6.5                           Materials
+7        5010   2   2.2          Telecommunication Services
+9        6010   2   2.2                         Real Estate
+3        2020   1   1.1  Commercial & Professional Services
+5        3020   1   1.1            Food, Beverage & Tobacco
+6        4510   1   1.1                 Software & Services
+
+
+####### KMeans Cluster 4: ['loan', 'bank', 'banking', 'mortgage', 'insurance'] ########
+
+   gicsIndGrp   n   pct                       indGrp
+1        4010  86  68.8                        Banks
+2        4020  20  16.0       Diversified Financials
+3        4030   9   7.2                    Insurance
+0        2520   5   4.0  Consumer Durables & Apparel
+4        6010   5   4.0                  Real Estate
+
+
+####### KMeans Cluster 5: ['care', 'patient', 'provider', 'clinical', 'healthcare'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+1        3510  26  89.7                Health Care Equipment & Services
+0        2020   2   6.9              Commercial & Professional Services
+2        3520   1   3.4  Pharmaceuticals, Biotechnology & Life Sciences
+
+
+####### KMeans Cluster 6: ['equipment', 'industrial', 'brand', 'construction', 'building'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+1        2010  35  48.6                       Capital Goods
+0        1510  24  33.3                           Materials
+3        2510   7   9.7            Automobiles & Components
+4        2520   3   4.2         Consumer Durables & Apparel
+2        2020   2   2.8  Commercial & Professional Services
+5        2550   1   1.4                           Retailing
+
+
+####### KMeans Cluster 7: ['store', 'brand', 'restaurant', 'apparel', 'merchandise'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+3        2550  18  50.0                           Retailing
+2        2530   7  19.4                   Consumer Services
+1        2520   5  13.9         Consumer Durables & Apparel
+4        3010   2   5.6            Food & Staples Retailing
+0        2020   1   2.8  Commercial & Professional Services
+5        3510   1   2.8    Health Care Equipment & Services
+6        4030   1   2.8                           Insurance
+7        5020   1   2.8               Media & Entertainment
+
+
+####### KMeans Cluster 8: ['pipeline', 'crude_oil', 'refinery', 'terminal', 'natural_gas'] ########
+
+   gicsIndGrp  n    pct  indGrp
+0        1010  9  100.0  Energy
+
+
+####### KMeans Cluster 9: ['patient', 'patent', 'treatment', 'cell', 'phase'] ########
+
+   gicsIndGrp   n    pct                                          indGrp
+0        3520  35  100.0  Pharmaceuticals, Biotechnology & Life Sciences
+
+
+####### KMeans Cluster 10: ['student', 'learning', 'school', 'online', 'education'] ########
+
+   gicsIndGrp  n   pct                              indGrp
+1        2530  9  56.2                   Consumer Services
+0        2020  2  12.5  Commercial & Professional Services
+3        4510  2  12.5                 Software & Services
+4        5020  2  12.5               Media & Entertainment
+2        4020  1   6.2              Diversified Financials
+
+
+####### KMeans Cluster 11: ['natural_gas', 'pipeline', 'energy', 'storage', 'capacity'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+4        5510  14  46.7                           Utilities
+0        1010  10  33.3                              Energy
+1        1510   3  10.0                           Materials
+3        2030   2   6.7                      Transportation
+2        2020   1   3.3  Commercial & Professional Services
+
+
+####### KMeans Cluster 12: ['test', 'patient', 'cell', 'patent', 'clinical'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+1        3520  13  81.2  Pharmaceuticals, Biotechnology & Life Sciences
+0        3510   3  18.8                Health Care Equipment & Services
+
+
+####### KMeans Cluster 13: ['software', 'device', 'vehicle', 'cloud', 'power'] ########
+
+    gicsIndGrp   n   pct                                    indGrp
+7         4520  23  28.8           Technology Hardware & Equipment
+0         2010  17  21.2                             Capital Goods
+6         4510  17  21.2                       Software & Services
+8         4530   7   8.8  Semiconductors & Semiconductor Equipment
+2         2510   4   5.0                  Automobiles & Components
+9         5010   4   5.0                Telecommunication Services
+1         2030   2   2.5                            Transportation
+5         3510   2   2.5          Health Care Equipment & Services
+10        5020   2   2.5                     Media & Entertainment
+3         2520   1   1.2               Consumer Durables & Apparel
+4         2530   1   1.2                         Consumer Services
+
+
+####### KMeans Cluster 14: ['gaming', 'casino', 'park', 'game', 'entertainment'] ########
+
+   gicsIndGrp  n   pct                 indGrp
+0        2530  6  75.0      Consumer Services
+1        5020  1  12.5  Media & Entertainment
+2        6010  1  12.5            Real Estate
+
+
+####### KMeans Cluster 15: ['patient', 'device', 'blood', 'procedure', 'surgical'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+0        3510  19  86.4                Health Care Equipment & Services
+1        3520   2   9.1  Pharmaceuticals, Biotechnology & Life Sciences
+2        4520   1   4.5                 Technology Hardware & Equipment
+
+
+####### KMeans Cluster 16: ['power', 'component', 'vehicle', 'equipment', 'battery'] ########
+
+   gicsIndGrp   n   pct                                    indGrp
+1        2010  21  45.7                             Capital Goods
+4        4520  10  21.7           Technology Hardware & Equipment
+5        4530   8  17.4  Semiconductors & Semiconductor Equipment
+0        1010   4   8.7                                    Energy
+3        3510   2   4.3          Health Care Equipment & Services
+2        2510   1   2.2                  Automobiles & Components
+
+
+####### KMeans Cluster 17: ['brand', 'store', 'footwear', 'woman', 'fragrance'] ########
+
+   gicsIndGrp  n   pct                         indGrp
+0        2520  3  60.0    Consumer Durables & Apparel
+1        2550  1  20.0                      Retailing
+2        3030  1  20.0  Household & Personal Products
+
+
+####### KMeans Cluster 18: ['client', 'payment', 'transaction', 'software', 'loan'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+5        4510  25  47.2                 Software & Services
+4        4020  12  22.6              Diversified Financials
+0        2020   8  15.1  Commercial & Professional Services
+7        6010   3   5.7                         Real Estate
+3        4010   2   3.8                               Banks
+1        2530   1   1.9                   Consumer Services
+2        3510   1   1.9    Health Care Equipment & Services
+6        5020   1   1.9               Media & Entertainment
+
+
+####### KMeans Cluster 19: ['security', 'cloud', 'software', 'user', 'enterprise'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+2        4510  26  83.9                 Software & Services
+0        2020   2   6.5  Commercial & Professional Services
+1        3510   1   3.2    Health Care Equipment & Services
+3        4520   1   3.2     Technology Hardware & Equipment
+4        5010   1   3.2          Telecommunication Services
+
+
+####### KMeans Cluster 20: ['content', 'medium', 'television', 'programming', 'advertising'] ########
+
+   gicsIndGrp  n   pct                                    indGrp
+5        5020  9  56.2                     Media & Entertainment
+0        2520  3  18.8               Consumer Durables & Apparel
+1        2550  1   6.2                                 Retailing
+2        4520  1   6.2           Technology Hardware & Equipment
+3        4530  1   6.2  Semiconductors & Semiconductor Equipment
+4        5010  1   6.2                Telecommunication Services
+
+
+####### KMeans Cluster 21: ['student', 'degree', 'kaplan', 'course', 'online'] ########
+
+   gicsIndGrp  n    pct             indGrp
+0        2530  3  100.0  Consumer Services
+
+
+####### KMeans Cluster 22: ['brand', 'food', 'store', 'retailer', 'home'] ########
+
+    gicsIndGrp   n   pct                                          indGrp
+8         3020  15  23.8                        Food, Beverage & Tobacco
+9         3030   9  14.3                   Household & Personal Products
+0         1510   8  12.7                                       Materials
+6         2550   7  11.1                                       Retailing
+7         3010   6   9.5                        Food & Staples Retailing
+5         2530   5   7.9                               Consumer Services
+2         2020   3   4.8              Commercial & Professional Services
+4         2520   3   4.8                     Consumer Durables & Apparel
+1         2010   2   3.2                                   Capital Goods
+3         2510   2   3.2                        Automobiles & Components
+11        3520   2   3.2  Pharmaceuticals, Biotechnology & Life Sciences
+10        3510   1   1.6                Health Care Equipment & Services
+
+
+####### KMeans Cluster 23: ['brand', 'food', 'protein', 'frozen', 'plant'] ########
+
+   gicsIndGrp  n   pct                                          indGrp
+3        3020  7  53.8                        Food, Beverage & Tobacco
+1        2530  2  15.4                               Consumer Services
+0        2520  1   7.7                     Consumer Durables & Apparel
+2        2550  1   7.7                                       Retailing
+4        3030  1   7.7                   Household & Personal Products
+5        3520  1   7.7  Pharmaceuticals, Biotechnology & Life Sciences
+
+=== Cell 7 Source ===
+def wordFrequency(col):
+    sdFreq = kmDf[col].str.split(expand=True).stack().value_counts()
+    return sdFreq
+
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    print(wordFrequency('cleanDesc')[0:100])
+    
+
+=== Cell 7 Output ===
+loan                  3838
+patient               2749
+brand                 2434
+bank                  2095
+software              2080
+patent                2078
+security              1942
+client                1868
+equipment             1782
+home                  1719
+treatment             1709
+investment            1600
+payment               1564
+provider              1559
+care                  1500
+insurance             1492
+financial             1447
+banking               1431
+industrial            1401
+vehicle               1399
+device                1363
+clinical              1291
+store                 1283
+energy                1261
+power                 1244
+online                1234
+cell                  1212
+pipeline              1209
+construction          1169
+study                 1136
+component             1118
+mortgage              1095
+content               1064
+project               1058
+phase                 1052
+user                  1030
+enterprise            1001
+medical                972
+specialty              970
+target                 946
+transaction            929
+cloud                  927
+transportation         920
+storage                919
+license                896
+real_estate            890
+member                 884
+healthcare             882
+disease                880
+deposit                877
+credit                 871
+natural_gas            862
+water                  849
+building               846
+communication          826
+test                   824
+food                   822
+residential            810
+produce                806
+capacity               797
+clinical_trial         788
+research               780
+trial                  776
+potential              760
+maintenance            742
+manufacture            735
+retailer               722
+agent                  706
+event                  703
+plant                  699
+lending                694
+patent_application     680
+student                674
+combination            673
+utility                661
+licensed               661
+video                  655
+gas                    651
+therapy                627
+lease                  623
+cancer                 619
+protein                616
+analytics              610
+personal               609
+fda                    590
+financing              583
+drug                   581
+testing                579
+integration            578
+medium                 565
+advertising            563
+collaboration          560
+trust                  551
+engineering            551
+method                 548
+fund                   544
+chemical               541
+operated               534
+analysis               532
+fuel                   530
+Name: count, dtype: int64
+
+=== Cell 8 Source ===
+warnings.filterwarnings('ignore')
+
+kmDf2 = d2vDf.copy() # First make a copy to a new dataframe
+
+Y = []
+for i, k in kmDf2.iterrows():
+    Y.append(k.companyid)
+
+vec = []
+for f in longD['cleanDesc']:
+    vec.append(d2v.docvecs[f])
+    
+pca24 = PCA(n_components=24)
+pca24_result = pca24.fit_transform(vec)
+print(pca24_result)
+
+scaler = StandardScaler() # Standardize all the loadings to ~N(0,1)
+scaled_X = scaler.fit_transform(np.array(pca24_result))   
+
+km_model2 = KMeans(n_clusters=24, max_iter=10000, tol=1e-8)
+km_model2.fit(scaled_X)
+pred2 = km_model2.labels_   # Get cluster assignment labels
+
+d2vIndGrpPca = pd.DataFrame( # Merge the industry groups to the dataframe
+    {'companyid': Y,
+     'd2vIndGrpPca': pred2
+    })
+
+kmDf2 = kmDf2.merge(d2vIndGrpPca, on='companyid')
+
+print(kmDf2.groupby('d2vIndGrpPca').size()) # Count the number of companies in each cluster (d2vIndGrpPca).
+
+
+=== Cell 8 Output ===
+[[-0.11671631 -2.04984856 -1.52498964 ...  0.17086921  0.01632785
+   0.10280752]
+ [-3.48533081  4.61931617 -1.32386966 ...  0.54468546  0.01517507
+   0.21945509]
+ [-0.53141571 -2.90724801 -2.17745848 ...  0.14693727  0.21118789
+   0.33502724]
+ ...
+ [-2.5313842  -3.66184629  1.71987321 ...  0.30057519 -0.38309678
+   0.15356868]
+ [-0.02266791  2.46286376  0.86520023 ... -0.11329618 -0.09482739
+   0.02412679]
+ [-0.98110542 -4.71481392 -1.99711827 ...  0.01999411 -0.5386714
+  -0.96638163]]
+d2vIndGrpPca
+0     325
+1      20
+2     137
+3      18
+4       1
+5      19
+6       1
+7      32
+8       8
+9      14
+10     37
+11    110
+12     37
+13     16
+14    109
+15      1
+16      1
+17      1
+18     15
+19     44
+20     24
+21     27
+22      4
+23      1
+dtype: int64
+
+=== Cell 9 Source ===
+def wordFrequency(iTxt, mcap):
+    d=dict(Counter(iTxt.split()))
+    k={i:(j/100)*mcap for i,j in d.items()}
+    return k
+
+topicnames = []
+for i in range(0,24):
+    print("")
+    print("")
+    print("####### KMeans Cluster " + str(i) + " ########")
+    smallD2 = kmDf2[ kmDf2.d2vIndGrpPca == i ]
+    smallD2['wF'] = smallD2.apply(lambda x:  wordFrequency(x.cleanDesc, x.logmcap), axis=1)
+
+    print(smallD2[['compustat_name','mktcap']].head(n=10))
+    names = []
+    for ii, n in smallD2.head(n=5).iterrows():
+        names.append(n.compustat_name)
+
+    wF = smallD2['wF'].to_list() 
+    counter = collections.Counter()
+    for d in wF: 
+        counter.update(d)
+    result = pd.DataFrame(dict(counter).items(), columns=['word', 'importance'])
+    result = result.sort_values(by='importance',ascending=False)
+    words = []
+    for ii, n in result.head(n=5).iterrows():
+        words.append(n.word)
+    topicnames.append([i, names, words])
+    print(words)
+
+topicnames = pd.DataFrame(topicnames, columns=['d2vIndGrpPca','top5companies','top5words'])
+print(topicnames)
+
+
+=== Cell 9 Output ===
+
+
+####### KMeans Cluster 0 ########
+                compustat_name      mktcap
+0         RANGE RESOURCES CORP  4632.14485
+1                     ANGI INC  4627.03953
+3                TERADATA CORP  4607.99500
+6            INARI MEDICAL INC  4582.21035
+9          MERITAGE HOMES CORP  4554.18066
+16        JETBLUE AIRWAYS CORP  4528.76144
+22                    FIGS INC  4504.90248
+23            BLACK HILLS CORP  4503.77740
+24  HANNON ARMSTRONG SUST INFR  4498.94528
+25                LESLIE'S INC  4494.97412
+['home', 'brand', 'software', 'insurance', 'equipment']
+
+
+####### KMeans Cluster 1 ########
+                   compustat_name      mktcap
+15    SHELL MIDSTREAM PARTNERS LP  4530.70080
+33               RYDER SYSTEM INC  4425.91399
+158                    MATSON INC  3784.14096
+176                     GATX CORP  3698.74500
+255              FORWARD AIR CORP  3264.34422
+272        WERNER ENTERPRISES INC  3187.69144
+278         EMBARK TECHNOLOGY INC  3146.27432
+296                  ARCBEST CORP  3064.32480
+341          HUB GROUP INC  -CL A  2917.23120
+350  FORTRESS TRANS INFRASTR INVS  2868.28560
+['pipeline', 'refinery', 'transportation', 'crude_oil', 'terminal']
+
+
+####### KMeans Cluster 2 ########
+                  compustat_name      mktcap
+4     SERVISFIRST BANCSHARES INC  4604.68234
+40        VICTORY CPTL HLDGS INC  4384.76896
+48          HANCOCK WHITNEY CORP  4343.03652
+78          UMPQUA HOLDINGS CORP  4167.88424
+85               BLOCK H & R INC  4137.81924
+86        BRIGHTHOUSE FINANL INC  4134.62420
+92   PENNYMAC FINANCIAL SERVICES  4119.04362
+111    COMMUNITY BANK SYSTEM INC  4016.78088
+115          HOME BANCSHARES INC  3984.31745
+118            NEWMARK GROUP INC  3974.40450
+['loan', 'bank', 'banking', 'investment', 'mortgage']
+
+
+####### KMeans Cluster 3 ########
+                   compustat_name      mktcap
+20   PACIFIC BIOSCIENCES OF CALIF  4513.43508
+74                NEOGENOMICS INC  4200.92264
+122         ADAPTIVE BIOTECH CORP  3960.16392
+146         TWIST BIOSCIENCE CORP  3841.02048
+313          FULGENT GENETICS INC  3000.70029
+338                  VERACYTE INC  2926.97160
+393              HAEMONETICS CORP  2710.60920
+464                    CAREDX INC  2401.43496
+506           MYRIAD GENETICS INC  2203.99800
+536                 SOMALOGIC INC  2108.85372
+['test', 'patient', 'cell', 'testing', 'clinical']
+
+
+####### KMeans Cluster 4 ########
+       compustat_name     mktcap
+822  MALIBU BOATS INC  1432.3332
+['boat', 'dealer', 'cobalt', 'outboard', 'maverick']
+
+
+####### KMeans Cluster 5 ########
+                   compustat_name      mktcap
+36              COMMERCIAL METALS  4412.68255
+163               HILLENBRAND INC  3768.44316
+270                    CABOT CORP  3192.32860
+331          RANPAK HOLDINGS CORP  2949.24082
+366                 INGEVITY CORP  2816.80620
+405                    KADANT INC  2674.48992
+454     MINERALS TECHNOLOGIES INC  2435.38295
+479  GCP APPLIED TECHNOLOGIES INC  2327.23162
+563                   TRINSEO PLC  2037.38902
+688          KRONOS WORLDWIDE INC  1734.40550
+['paper', 'brand', 'packaging', 'metal', 'equipment']
+
+
+####### KMeans Cluster 6 ########
+             compustat_name     mktcap
+134  ACUSHNET HOLDINGS CORP  3908.2804
+['golf', 'titleist', 'pro', 'ball', 'club']
+
+
+####### KMeans Cluster 7 ########
+                   compustat_name      mktcap
+49                    ARVINAS INC  4342.90608
+153  ZENTALIS PHARMACEUTICALS INC  3808.42236
+242        RELAY THERAPEUTICS INC  3318.03124
+256        KYMERA THERAPEUTIC INC  3262.56063
+297  SPRINGWORKS THERAPEUTICS INC  3052.45302
+316   IOVANCE BIOTHERAPEUTICS INC  2995.20191
+339         SANA BIOTCHNOLOGY INC  2923.13484
+356         ARCUS BIOSCIENCES INC  2842.97703
+388           TG THERAPEUTICS INC  2715.91700
+441           NEKTAR THERAPEUTICS  2493.36507
+['cell', 'patient', 'patent', 'cancer', 'phase']
+
+
+####### KMeans Cluster 8 ########
+                   compustat_name      mktcap
+94                      TEGNA INC  4106.97536
+172     WORLD WRESTLING ENTMT INC  3740.81078
+463       MADISON SQUARE GARD ENT  2405.06528
+573  SINCLAIR BROADCAST GP  -CL A  1996.46934
+581                    XPERI CORP  1976.66230
+746             EW SCRIPPS  -CL A  1596.85875
+817              AMC NETWORKS INC  1455.15888
+857   LIONS GATE ENTERTAINMENT CP  1374.46400
+['content', 'television', 'programming', 'medium', 'tv']
+
+
+####### KMeans Cluster 9 ########
+                   compustat_name      mktcap
+30                      CHEGG INC  4449.87290
+173                    NELNET INC  3735.38088
+213    GRAND CANYON EDUCATION INC  3434.74254
+230      INSTRUCTURE HOLDINGS INC  3367.36752
+257      POWERSCHOOL HOLDINGS INC  3258.52362
+273    WILEY (JOHN) & SONS  -CL A  3186.69441
+283            GRAHAM HOLDINGS CO  3119.54799
+782                        2U INC  1512.71604
+810  ADTALEM GLOBAL EDUCATION INC  1471.05340
+828                    STRIDE INC  1425.42411
+['student', 'school', 'learning', 'online', 'course']
+
+
+####### KMeans Cluster 10 ########
+                   compustat_name      mktcap
+10                    PROGYNY INC  4553.15050
+45                  LHC GROUP INC  4346.21133
+127  SELECT MEDICAL HOLDINGS CORP  3943.86300
+179                   CORVEL CORP  3685.76000
+197         LIFESTAN HLTH GRP INC  3561.89848
+201     MERIT MEDICAL SYSTEMS INC  3517.33340
+207      IRHYTHM TECHNOLOGIES INC  3463.14594
+233          1LIFE HEALTHCARE INC  3353.91973
+251    APOLLO MEDICAL HOLDING INC  3278.89804
+292              EVERCOMMERCE INC  3076.93575
+['care', 'patient', 'provider', 'clinical', 'physician']
+
+
+####### KMeans Cluster 11 ########
+                  compustat_name      mktcap
+17   SPIRIT AEROSYSTEMS HOLDINGS  4526.47523
+34                  REXNORD CORP  4417.14000
+35          BWX TECHNOLOGIES INC  4414.63176
+47                   HEXCEL CORP  4345.70920
+67        ALARM.COM HOLDINGS INC  4245.58860
+70         DIVERSEY HOLDINGS LTD  4225.00661
+77           VIAVI SOLUTIONS INC  4188.02732
+80                      AAON INC  4164.35604
+82   INSTALLED BLDG PRODUCTS INC  4150.66204
+114               FLOWSERVE CORP  3986.20080
+['equipment', 'component', 'industrial', 'vehicle', 'device']
+
+
+####### KMeans Cluster 12 ########
+                compustat_name      mktcap
+5      HERBALIFE NUTRITION LTD  4589.60369
+7                SEABOARD CORP  4568.54661
+8        LANCASTER COLONY CORP  4558.96800
+62         SANDERSON FARMS INC  4264.71452
+68      NATIONAL BEVERAGE CORP  4230.28626
+90             BEYOND MEAT INC  4126.64796
+102  SIMPLY GOOD FOODS COMPANY  4066.50211
+109   HAIN CELESTIAL GROUP INC  4030.09641
+227                WELBILT INC  3382.35215
+236                 TILRAY INC  3336.31146
+['food', 'brand', 'restaurant', 'store', 'plant']
+
+
+####### KMeans Cluster 13 ########
+                 compustat_name      mktcap
+43              FOOT LOCKER INC  4379.05584
+60                 CARTER'S INC  4278.16452
+61   AMERN EAGLE OUTFITTERS INC  4269.50904
+159           MADDEN STEVEN LTD  3782.33271
+183      BOOT BARN HOLDINGS INC  3643.38745
+187               NORDSTROM INC  3603.66006
+222           INTER PARFUMS INC  3392.36460
+336          KONTOOR BRANDS INC  2937.49625
+349        URBAN OUTFITTERS INC  2873.87424
+468        WOLVERINE WORLD WIDE  2373.05089
+['store', 'brand', 'wholesale', 'footwear', 'woman']
+
+
+####### KMeans Cluster 14 ########
+           compustat_name      mktcap
+11          INSPERITY INC  4547.47122
+13            CERTARA INC  4538.07718
+18      JAMF HOLDING CORP  4524.90045
+19        Q2 HOLDINGS INC  4513.54248
+21  SAILPOINT TECHNO HLDG  4508.38176
+44             BUMBLE INC  4376.13412
+50          ENVESTNET INC  4335.45496
+55     DATTO HOLDING CORP  4296.97355
+64         PERFICIENT INC  4258.55402
+66      TTEC HOLDINGS INC  4254.85395
+['software', 'payment', 'client', 'security', 'user']
+
+
+####### KMeans Cluster 15 ########
+    compustat_name      mktcap
+195     KIRBY CORP  3571.79562
+['barge', 'marine', 'inland', 'equipment', 'transportation']
+
+
+####### KMeans Cluster 16 ########
+             compustat_name      mktcap
+665  VERVE THERAPEUTICS INC  1776.06477
+['angptlnnnn', 'lnp', 'liver', 'gene_editing', 'patient']
+
+
+####### KMeans Cluster 17 ########
+           compustat_name      mktcap
+868  PARAGON 28 INC -REDH  1351.07375
+['screw', 'ankle', 'patient', 'bone', 'procedure']
+
+
+####### KMeans Cluster 18 ########
+                   compustat_name      mktcap
+39   CASELLA WASTE SYS INC  -CL A  4390.41716
+131            CVENT HOLDING CORP  3930.76674
+221          RED ROCK RESORTS INC  3400.22311
+295                     ST JOE CO  3064.86015
+355               CEDAR FAIR  -LP  2845.51052
+368               HECLA MINING CO  2809.08558
+548                   BALLYS CORP  2069.05578
+594            EVERI HOLDINGS INC  1942.40165
+735  ALLIANCE RESOURCE PTNRS  -LP  1607.74480
+788              ENERGY FUELS INC  1503.29886
+['event', 'gaming', 'coal', 'mine', 'casino']
+
+
+####### KMeans Cluster 19 ########
+                   compustat_name      mktcap
+12        APELLIS PHARMACEUTICALS  4541.00760
+41            KODIAK SCIENCES INC  4384.56726
+46              STAAR SURGICAL CO  4345.88000
+63   INTRA-CELLULAR THERAPIES INC  4263.77342
+138        KARUNA THERPEUTICS INC  3880.74400
+169    ACADIA PHARMACEUTICALS INC  3752.04504
+252               OPKO HEALTH INC  3277.25021
+262                    INSMED INC  3224.45328
+264       AMICUS THERAPEUTICS INC  3218.28045
+268                  ATRICURE INC  3193.65196
+['treatment', 'patient', 'patent', 'study', 'phase']
+
+
+####### KMeans Cluster 20 ########
+                compustat_name      mktcap
+14      HAWAIIAN ELECTRIC INDS  4536.40650
+31      ORMAT TECHNOLOGIES INC  4440.95860
+75                AMERESCO INC  4198.96496
+83                RENESOLA LTD  4147.06932
+112                NIKOLA CORP  4015.95495
+128  NEW JERSEY RESOURCES CORP  3939.91230
+132          PNM RESOURCES INC  3914.93435
+145          BLOOM ENERGY CORP  3848.47377
+186              SUNPOWER CORP  3610.25956
+206                 ALLETE INC  3488.15220
+['energy', 'power', 'solar', 'vehicle', 'project']
+
+
+####### KMeans Cluster 21 ########
+                 compustat_name      mktcap
+2         ANTERO MIDSTREAM CORP  4622.23872
+27           EQUITRANS MID CORP  4472.06034
+51         MATADOR RESOURCES CO  4332.04512
+69   SOUTHWEST GAS HOLDINGS INC  4229.96925
+99                  APERGY CORP  4083.83470
+108             MURPHY OIL CORP  4032.92449
+147                 DENBURY INC  3838.84398
+190                SM ENERGY CO  3581.05352
+214   CALIFORNIA RESOURCES CORP  3433.58503
+228                   SPIRE INC  3374.61324
+['natural_gas', 'pipeline', 'water', 'gas', 'gathering']
+
+
+####### KMeans Cluster 22 ########
+                compustat_name      mktcap
+54   IONIS PHARMACEUTICALS INC  4297.02030
+150           CYTOKINETICS INC  3823.38714
+438      SAGE THERAPEUTICS INC  2505.94632
+889  ANAVEX LIFE SCIENCES CORP  1318.15212
+['study', 'patient', 'anavexnnnn', 'treatment', 'phase']
+
+
+####### KMeans Cluster 23 ########
+    compustat_name      mktcap
+900  MARINEMAX INC  1297.22688
+['boat', 'yacht', 'marina', 'marine', 'recreational']
+    d2vIndGrpPca                                      top5companies  \
+0              0  [RANGE RESOURCES CORP, ANGI INC, TERADATA CORP...   
+1              1  [SHELL MIDSTREAM PARTNERS LP, RYDER SYSTEM INC...   
+2              2  [SERVISFIRST BANCSHARES INC, VICTORY CPTL HLDG...   
+3              3  [PACIFIC BIOSCIENCES OF CALIF, NEOGENOMICS INC...   
+4              4                                 [MALIBU BOATS INC]   
+5              5  [COMMERCIAL METALS, HILLENBRAND INC, CABOT COR...   
+6              6                           [ACUSHNET HOLDINGS CORP]   
+7              7  [ARVINAS INC, ZENTALIS PHARMACEUTICALS INC, RE...   
+8              8  [TEGNA INC, WORLD WRESTLING ENTMT INC, MADISON...   
+9              9  [CHEGG INC, NELNET INC, GRAND CANYON EDUCATION...   
+10            10  [PROGYNY INC, LHC GROUP INC, SELECT MEDICAL HO...   
+11            11  [SPIRIT AEROSYSTEMS HOLDINGS, REXNORD CORP, BW...   
+12            12  [HERBALIFE NUTRITION LTD, SEABOARD CORP, LANCA...   
+13            13  [FOOT LOCKER INC, CARTER'S INC, AMERN EAGLE OU...   
+14            14  [INSPERITY INC, CERTARA INC, JAMF HOLDING CORP...   
+15            15                                       [KIRBY CORP]   
+16            16                           [VERVE THERAPEUTICS INC]   
+17            17                             [PARAGON 28 INC -REDH]   
+18            18  [CASELLA WASTE SYS INC  -CL A, CVENT HOLDING C...   
+19            19  [APELLIS PHARMACEUTICALS, KODIAK SCIENCES INC,...   
+20            20  [HAWAIIAN ELECTRIC INDS, ORMAT TECHNOLOGIES IN...   
+21            21  [ANTERO MIDSTREAM CORP, EQUITRANS MID CORP, MA...   
+22            22  [IONIS PHARMACEUTICALS INC, CYTOKINETICS INC, ...   
+23            23                                    [MARINEMAX INC]   
+
+                                            top5words  
+0       [home, brand, software, insurance, equipment]  
+1   [pipeline, refinery, transportation, crude_oil...  
+2         [loan, bank, banking, investment, mortgage]  
+3            [test, patient, cell, testing, clinical]  
+4          [boat, dealer, cobalt, outboard, maverick]  
+5         [paper, brand, packaging, metal, equipment]  
+6                   [golf, titleist, pro, ball, club]  
+7              [cell, patient, patent, cancer, phase]  
+8      [content, television, programming, medium, tv]  
+9         [student, school, learning, online, course]  
+10     [care, patient, provider, clinical, physician]  
+11  [equipment, component, industrial, vehicle, de...  
+12            [food, brand, restaurant, store, plant]  
+13         [store, brand, wholesale, footwear, woman]  
+14        [software, payment, client, security, user]  
+15  [barge, marine, inland, equipment, transportat...  
+16    [angptlnnnn, lnp, liver, gene_editing, patient]  
+17           [screw, ankle, patient, bone, procedure]  
+18                [event, gaming, coal, mine, casino]  
+19         [treatment, patient, patent, study, phase]  
+20           [energy, power, solar, vehicle, project]  
+21     [natural_gas, pipeline, water, gas, gathering]  
+22     [study, patient, anavexnnnn, treatment, phase]  
+23        [boat, yacht, marina, marine, recreational]  
+
+=== Cell 10 Source ===
+for i, n in indGrpNames.iterrows():
+    print("")
+    print("")
+    print("####### GICS Industry Group " + str(n.gicsIndGrp) + ": "+n.indGrp+" ########")
+    print()
+    ntopics = kmDf2[kmDf2.gicsIndGrp==n.gicsIndGrp].groupby(['d2vIndGrpPca']).size().reset_index()
+    ntopics.columns = ['d2vIndGrpPca','n']
+    ntopics['pct'] = round(100.0*ntopics['n'] / ntopics['n'].sum(),1 )
+    ntopics = ntopics.merge(topicnames, on='d2vIndGrpPca')
+    ntopics = ntopics.sort_values(by='n',ascending=False)
+    print(ntopics[['d2vIndGrpPca','n','pct','top5words']])
+    
+
+=== Cell 10 Output ===
+
+
+####### GICS Industry Group 1010: Energy ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+0             0  21  38.2      [home, brand, software, insurance, equipment]
+5            21  19  34.5     [natural_gas, pipeline, water, gas, gathering]
+1             1   9  16.4  [pipeline, refinery, transportation, crude_oil...
+3            18   3   5.5                [event, gaming, coal, mine, casino]
+4            20   2   3.6           [energy, power, solar, vehicle, project]
+2            11   1   1.8  [equipment, component, industrial, vehicle, de...
+
+
+####### GICS Industry Group 1510: Materials ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+0             0  20  45.5      [home, brand, software, insurance, equipment]
+1             5  12  27.3        [paper, brand, packaging, metal, equipment]
+2            11   8  18.2  [equipment, component, industrial, vehicle, de...
+4            18   3   6.8                [event, gaming, coal, mine, casino]
+3            12   1   2.3            [food, brand, restaurant, store, plant]
+
+
+####### GICS Industry Group 2010: Capital Goods ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+3            11  50  47.2  [equipment, component, industrial, vehicle, de...
+0             0  38  35.8      [home, brand, software, insurance, equipment]
+5            20   9   8.5           [energy, power, solar, vehicle, project]
+1             1   3   2.8  [pipeline, refinery, transportation, crude_oil...
+2             5   3   2.8        [paper, brand, packaging, metal, equipment]
+6            21   2   1.9     [natural_gas, pipeline, water, gas, gathering]
+4            12   1   0.9            [food, brand, restaurant, store, plant]
+
+
+####### GICS Industry Group 2020: Commercial & Professional Services ########
+
+   d2vIndGrpPca   n   pct                                      top5words
+0             0  15  48.4  [home, brand, software, insurance, equipment]
+4            14  11  35.5    [software, payment, client, security, user]
+2             5   2   6.5    [paper, brand, packaging, metal, equipment]
+1             2   1   3.2    [loan, bank, banking, investment, mortgage]
+3             9   1   3.2    [student, school, learning, online, course]
+5            18   1   3.2            [event, gaming, coal, mine, casino]
+
+
+####### GICS Industry Group 2030: Transportation ########
+
+   d2vIndGrpPca  n   pct                                          top5words
+0             0  9  45.0      [home, brand, software, insurance, equipment]
+1             1  6  30.0  [pipeline, refinery, transportation, crude_oil...
+2            11  3  15.0  [equipment, component, industrial, vehicle, de...
+3            15  1   5.0  [barge, marine, inland, equipment, transportat...
+4            20  1   5.0           [energy, power, solar, vehicle, project]
+
+
+####### GICS Industry Group 2510: Automobiles & Components ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+1            11  10  71.4  [equipment, component, industrial, vehicle, de...
+0             0   3  21.4      [home, brand, software, insurance, equipment]
+2            20   1   7.1           [energy, power, solar, vehicle, project]
+
+
+####### GICS Industry Group 2520: Consumer Durables & Apparel ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+0             0  16  51.6      [home, brand, software, insurance, equipment]
+6            13   7  22.6         [store, brand, wholesale, footwear, woman]
+4            11   3   9.7  [equipment, component, industrial, vehicle, de...
+1             2   1   3.2        [loan, bank, banking, investment, mortgage]
+2             4   1   3.2         [boat, dealer, cobalt, outboard, maverick]
+3             6   1   3.2                  [golf, titleist, pro, ball, club]
+5            12   1   3.2            [food, brand, restaurant, store, plant]
+7            14   1   3.2        [software, payment, client, security, user]
+
+
+####### GICS Industry Group 2530: Consumer Services ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+0             0  12  30.8      [home, brand, software, insurance, equipment]
+2             9   9  23.1        [student, school, learning, online, course]
+4            12   8  20.5            [food, brand, restaurant, store, plant]
+6            18   6  15.4                [event, gaming, coal, mine, casino]
+5            14   2   5.1        [software, payment, client, security, user]
+1             2   1   2.6        [loan, bank, banking, investment, mortgage]
+3            11   1   2.6  [equipment, component, industrial, vehicle, de...
+
+
+####### GICS Industry Group 2550: Retailing ########
+
+   d2vIndGrpPca   n   pct                                      top5words
+0             0  24  61.5  [home, brand, software, insurance, equipment]
+2            13   8  20.5     [store, brand, wholesale, footwear, woman]
+3            14   5  12.8    [software, payment, client, security, user]
+1            12   1   2.6        [food, brand, restaurant, store, plant]
+4            23   1   2.6    [boat, yacht, marina, marine, recreational]
+
+
+####### GICS Industry Group 3010: Food & Staples Retailing ########
+
+   d2vIndGrpPca  n   pct                                      top5words
+1            12  5  62.5        [food, brand, restaurant, store, plant]
+0             0  3  37.5  [home, brand, software, insurance, equipment]
+
+
+####### GICS Industry Group 3020: Food, Beverage & Tobacco ########
+
+   d2vIndGrpPca   n   pct                                      top5words
+1            12  16  69.6        [food, brand, restaurant, store, plant]
+0             0   7  30.4  [home, brand, software, insurance, equipment]
+
+
+####### GICS Industry Group 3030: Household & Personal Products ########
+
+   d2vIndGrpPca  n   pct                                          top5words
+0             0  7  58.3      [home, brand, software, insurance, equipment]
+2            12  3  25.0            [food, brand, restaurant, store, plant]
+1            11  1   8.3  [equipment, component, industrial, vehicle, de...
+3            13  1   8.3         [store, brand, wholesale, footwear, woman]
+
+
+####### GICS Industry Group 3510: Health Care Equipment & Services ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+4            10  33  43.4     [care, patient, provider, clinical, physician]
+0             0  24  31.6      [home, brand, software, insurance, equipment]
+8            19   7   9.2         [treatment, patient, patent, study, phase]
+3             3   5   6.6           [test, patient, cell, testing, clinical]
+5            11   2   2.6  [equipment, component, industrial, vehicle, de...
+6            14   2   2.6        [software, payment, client, security, user]
+1             1   1   1.3  [pipeline, refinery, transportation, crude_oil...
+2             2   1   1.3        [loan, bank, banking, investment, mortgage]
+7            17   1   1.3           [screw, ankle, patient, bone, procedure]
+
+
+####### GICS Industry Group 3520: Pharmaceuticals, Biotechnology & Life Sciences ########
+
+   d2vIndGrpPca   n   pct                                        top5words
+6            19  37  37.0       [treatment, patient, patent, study, phase]
+2             7  32  32.0           [cell, patient, patent, cancer, phase]
+1             3  13  13.0         [test, patient, cell, testing, clinical]
+0             0  10  10.0    [home, brand, software, insurance, equipment]
+7            22   4   4.0   [study, patient, anavexnnnn, treatment, phase]
+3            10   2   2.0   [care, patient, provider, clinical, physician]
+4            12   1   1.0          [food, brand, restaurant, store, plant]
+5            16   1   1.0  [angptlnnnn, lnp, liver, gene_editing, patient]
+
+
+####### GICS Industry Group 4010: Banks ########
+
+   d2vIndGrpPca   n   pct                                      top5words
+1             2  91  92.9    [loan, bank, banking, investment, mortgage]
+0             0   7   7.1  [home, brand, software, insurance, equipment]
+
+
+####### GICS Industry Group 4020: Diversified Financials ########
+
+   d2vIndGrpPca   n   pct                                      top5words
+1             2  26  61.9    [loan, bank, banking, investment, mortgage]
+0             0  12  28.6  [home, brand, software, insurance, equipment]
+3            14   3   7.1    [software, payment, client, security, user]
+2             9   1   2.4    [student, school, learning, online, course]
+
+
+####### GICS Industry Group 4030: Insurance ########
+
+   d2vIndGrpPca   n   pct                                      top5words
+0             0  11  55.0  [home, brand, software, insurance, equipment]
+1             2   9  45.0    [loan, bank, banking, investment, mortgage]
+
+
+####### GICS Industry Group 4510: Software & Services ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+6            14  68  70.8        [software, payment, client, security, user]
+0             0  22  22.9      [home, brand, software, insurance, equipment]
+1             1   1   1.0  [pipeline, refinery, transportation, crude_oil...
+2             2   1   1.0        [loan, bank, banking, investment, mortgage]
+3             9   1   1.0        [student, school, learning, online, course]
+4            10   1   1.0     [care, patient, provider, clinical, physician]
+5            11   1   1.0  [equipment, component, industrial, vehicle, de...
+7            18   1   1.0                [event, gaming, coal, mine, casino]
+
+
+####### GICS Industry Group 4520: Technology Hardware & Equipment ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+2            11  17  43.6  [equipment, component, industrial, vehicle, de...
+0             0  16  41.0      [home, brand, software, insurance, equipment]
+3            14   5  12.8        [software, payment, client, security, user]
+1             5   1   2.6        [paper, brand, packaging, metal, equipment]
+
+
+####### GICS Industry Group 4530: Semiconductors & Semiconductor Equipment ########
+
+   d2vIndGrpPca  n   pct                                          top5words
+3            11  8  50.0  [equipment, component, industrial, vehicle, de...
+0             0  5  31.2      [home, brand, software, insurance, equipment]
+1             5  1   6.2        [paper, brand, packaging, metal, equipment]
+2             8  1   6.2     [content, television, programming, medium, tv]
+4            20  1   6.2           [energy, power, solar, vehicle, project]
+
+
+####### GICS Industry Group 5010: Telecommunication Services ########
+
+   d2vIndGrpPca  n   pct                                          top5words
+0             0  4  40.0      [home, brand, software, insurance, equipment]
+1            11  4  40.0  [equipment, component, industrial, vehicle, de...
+2            14  2  20.0        [software, payment, client, security, user]
+
+
+####### GICS Industry Group 5020: Media & Entertainment ########
+
+   d2vIndGrpPca   n   pct                                       top5words
+0             0  15  45.5   [home, brand, software, insurance, equipment]
+3            14   9  27.3     [software, payment, client, security, user]
+1             8   7  21.2  [content, television, programming, medium, tv]
+2             9   2   6.1     [student, school, learning, online, course]
+
+
+####### GICS Industry Group 5510: Utilities ########
+
+   d2vIndGrpPca   n   pct                                          top5words
+2            20  10  38.5           [energy, power, solar, vehicle, project]
+0             0   9  34.6      [home, brand, software, insurance, equipment]
+3            21   6  23.1     [natural_gas, pipeline, water, gas, gathering]
+1            11   1   3.8  [equipment, component, industrial, vehicle, de...
+
+
+####### GICS Industry Group 6010: Real Estate ########
+
+   d2vIndGrpPca   n   pct                                       top5words
+0             0  15  62.5   [home, brand, software, insurance, equipment]
+1             2   6  25.0     [loan, bank, banking, investment, mortgage]
+2            10   1   4.2  [care, patient, provider, clinical, physician]
+3            14   1   4.2     [software, payment, client, security, user]
+4            18   1   4.2             [event, gaming, coal, mine, casino]
+
+=== Cell 11 Source ===
+for c in range(0,24):
+    print("")
+    print("")
+    print("####### KMeans Cluster " + str(c) + ": "+str(topicnames.top5words.iloc[c])+" ########")
+    print()
+    ntopics = kmDf2[kmDf2.d2vIndGrpPca==c].groupby(['gicsIndGrp']).size().reset_index()
+    ntopics.columns = ['gicsIndGrp','n']
+    ntopics['pct'] = round(100.0*ntopics['n'] / ntopics['n'].sum(),1 )
+    ntopics = ntopics.merge(indGrpNames, on='gicsIndGrp')
+    ntopics = ntopics.sort_values(by='n',ascending=False)
+    print(ntopics[['gicsIndGrp','n','pct','indGrp']])
+    
+
+=== Cell 11 Output ===
+
+
+####### KMeans Cluster 0: ['home', 'brand', 'software', 'insurance', 'equipment'] ########
+
+    gicsIndGrp   n   pct                                          indGrp
+2         2010  38  11.7                                   Capital Goods
+12        3510  24   7.4                Health Care Equipment & Services
+8         2550  24   7.4                                       Retailing
+17        4510  22   6.8                             Software & Services
+0         1010  21   6.5                                          Energy
+1         1510  20   6.2                                       Materials
+18        4520  16   4.9                 Technology Hardware & Equipment
+6         2520  16   4.9                     Consumer Durables & Apparel
+23        6010  15   4.6                                     Real Estate
+3         2020  15   4.6              Commercial & Professional Services
+21        5020  15   4.6                           Media & Entertainment
+7         2530  12   3.7                               Consumer Services
+15        4020  12   3.7                          Diversified Financials
+16        4030  11   3.4                                       Insurance
+13        3520  10   3.1  Pharmaceuticals, Biotechnology & Life Sciences
+4         2030   9   2.8                                  Transportation
+22        5510   9   2.8                                       Utilities
+14        4010   7   2.2                                           Banks
+11        3030   7   2.2                   Household & Personal Products
+10        3020   7   2.2                        Food, Beverage & Tobacco
+19        4530   5   1.5        Semiconductors & Semiconductor Equipment
+20        5010   4   1.2                      Telecommunication Services
+9         3010   3   0.9                        Food & Staples Retailing
+5         2510   3   0.9                        Automobiles & Components
+
+
+####### KMeans Cluster 1: ['pipeline', 'refinery', 'transportation', 'crude_oil', 'terminal'] ########
+
+   gicsIndGrp  n   pct                            indGrp
+0        1010  9  45.0                            Energy
+2        2030  6  30.0                    Transportation
+1        2010  3  15.0                     Capital Goods
+3        3510  1   5.0  Health Care Equipment & Services
+4        4510  1   5.0               Software & Services
+
+
+####### KMeans Cluster 2: ['loan', 'bank', 'banking', 'investment', 'mortgage'] ########
+
+   gicsIndGrp   n   pct                              indGrp
+4        4010  91  66.4                               Banks
+5        4020  26  19.0              Diversified Financials
+6        4030   9   6.6                           Insurance
+8        6010   6   4.4                         Real Estate
+0        2020   1   0.7  Commercial & Professional Services
+1        2520   1   0.7         Consumer Durables & Apparel
+2        2530   1   0.7                   Consumer Services
+3        3510   1   0.7    Health Care Equipment & Services
+7        4510   1   0.7                 Software & Services
+
+
+####### KMeans Cluster 3: ['test', 'patient', 'cell', 'testing', 'clinical'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+1        3520  13  72.2  Pharmaceuticals, Biotechnology & Life Sciences
+0        3510   5  27.8                Health Care Equipment & Services
+
+
+####### KMeans Cluster 4: ['boat', 'dealer', 'cobalt', 'outboard', 'maverick'] ########
+
+   gicsIndGrp  n    pct                       indGrp
+0        2520  1  100.0  Consumer Durables & Apparel
+
+
+####### KMeans Cluster 5: ['paper', 'brand', 'packaging', 'metal', 'equipment'] ########
+
+   gicsIndGrp   n   pct                                    indGrp
+0        1510  12  63.2                                 Materials
+1        2010   3  15.8                             Capital Goods
+2        2020   2  10.5        Commercial & Professional Services
+3        4520   1   5.3           Technology Hardware & Equipment
+4        4530   1   5.3  Semiconductors & Semiconductor Equipment
+
+
+####### KMeans Cluster 6: ['golf', 'titleist', 'pro', 'ball', 'club'] ########
+
+   gicsIndGrp  n    pct                       indGrp
+0        2520  1  100.0  Consumer Durables & Apparel
+
+
+####### KMeans Cluster 7: ['cell', 'patient', 'patent', 'cancer', 'phase'] ########
+
+   gicsIndGrp   n    pct                                          indGrp
+0        3520  32  100.0  Pharmaceuticals, Biotechnology & Life Sciences
+
+
+####### KMeans Cluster 8: ['content', 'television', 'programming', 'medium', 'tv'] ########
+
+   gicsIndGrp  n   pct                                    indGrp
+1        5020  7  87.5                     Media & Entertainment
+0        4530  1  12.5  Semiconductors & Semiconductor Equipment
+
+
+####### KMeans Cluster 9: ['student', 'school', 'learning', 'online', 'course'] ########
+
+   gicsIndGrp  n   pct                              indGrp
+1        2530  9  64.3                   Consumer Services
+4        5020  2  14.3               Media & Entertainment
+0        2020  1   7.1  Commercial & Professional Services
+2        4020  1   7.1              Diversified Financials
+3        4510  1   7.1                 Software & Services
+
+
+####### KMeans Cluster 10: ['care', 'patient', 'provider', 'clinical', 'physician'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+0        3510  33  89.2                Health Care Equipment & Services
+1        3520   2   5.4  Pharmaceuticals, Biotechnology & Life Sciences
+2        4510   1   2.7                             Software & Services
+3        6010   1   2.7                                     Real Estate
+
+
+####### KMeans Cluster 11: ['equipment', 'component', 'industrial', 'vehicle', 'device'] ########
+
+    gicsIndGrp   n   pct                                    indGrp
+2         2010  50  45.5                             Capital Goods
+10        4520  17  15.5           Technology Hardware & Equipment
+4         2510  10   9.1                  Automobiles & Components
+1         1510   8   7.3                                 Materials
+11        4530   8   7.3  Semiconductors & Semiconductor Equipment
+12        5010   4   3.6                Telecommunication Services
+3         2030   3   2.7                            Transportation
+5         2520   3   2.7               Consumer Durables & Apparel
+8         3510   2   1.8          Health Care Equipment & Services
+0         1010   1   0.9                                    Energy
+6         2530   1   0.9                         Consumer Services
+7         3030   1   0.9             Household & Personal Products
+9         4510   1   0.9                       Software & Services
+13        5510   1   0.9                                 Utilities
+
+
+####### KMeans Cluster 12: ['food', 'brand', 'restaurant', 'store', 'plant'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+6        3020  16  43.2                        Food, Beverage & Tobacco
+3        2530   8  21.6                               Consumer Services
+5        3010   5  13.5                        Food & Staples Retailing
+7        3030   3   8.1                   Household & Personal Products
+0        1510   1   2.7                                       Materials
+1        2010   1   2.7                                   Capital Goods
+2        2520   1   2.7                     Consumer Durables & Apparel
+4        2550   1   2.7                                       Retailing
+8        3520   1   2.7  Pharmaceuticals, Biotechnology & Life Sciences
+
+
+####### KMeans Cluster 13: ['store', 'brand', 'wholesale', 'footwear', 'woman'] ########
+
+   gicsIndGrp  n   pct                         indGrp
+1        2550  8  50.0                      Retailing
+0        2520  7  43.8    Consumer Durables & Apparel
+2        3030  1   6.2  Household & Personal Products
+
+
+####### KMeans Cluster 14: ['software', 'payment', 'client', 'security', 'user'] ########
+
+    gicsIndGrp   n   pct                              indGrp
+6         4510  68  62.4                 Software & Services
+0         2020  11  10.1  Commercial & Professional Services
+9         5020   9   8.3               Media & Entertainment
+3         2550   5   4.6                           Retailing
+7         4520   5   4.6     Technology Hardware & Equipment
+5         4020   3   2.8              Diversified Financials
+2         2530   2   1.8                   Consumer Services
+4         3510   2   1.8    Health Care Equipment & Services
+8         5010   2   1.8          Telecommunication Services
+1         2520   1   0.9         Consumer Durables & Apparel
+10        6010   1   0.9                         Real Estate
+
+
+####### KMeans Cluster 15: ['barge', 'marine', 'inland', 'equipment', 'transportation'] ########
+
+   gicsIndGrp  n    pct          indGrp
+0        2030  1  100.0  Transportation
+
+
+####### KMeans Cluster 16: ['angptlnnnn', 'lnp', 'liver', 'gene_editing', 'patient'] ########
+
+   gicsIndGrp  n    pct                                          indGrp
+0        3520  1  100.0  Pharmaceuticals, Biotechnology & Life Sciences
+
+
+####### KMeans Cluster 17: ['screw', 'ankle', 'patient', 'bone', 'procedure'] ########
+
+   gicsIndGrp  n    pct                            indGrp
+0        3510  1  100.0  Health Care Equipment & Services
+
+
+####### KMeans Cluster 18: ['event', 'gaming', 'coal', 'mine', 'casino'] ########
+
+   gicsIndGrp  n   pct                              indGrp
+3        2530  6  40.0                   Consumer Services
+0        1010  3  20.0                              Energy
+1        1510  3  20.0                           Materials
+2        2020  1   6.7  Commercial & Professional Services
+4        4510  1   6.7                 Software & Services
+5        6010  1   6.7                         Real Estate
+
+
+####### KMeans Cluster 19: ['treatment', 'patient', 'patent', 'study', 'phase'] ########
+
+   gicsIndGrp   n   pct                                          indGrp
+1        3520  37  84.1  Pharmaceuticals, Biotechnology & Life Sciences
+0        3510   7  15.9                Health Care Equipment & Services
+
+
+####### KMeans Cluster 20: ['energy', 'power', 'solar', 'vehicle', 'project'] ########
+
+   gicsIndGrp   n   pct                                    indGrp
+5        5510  10  41.7                                 Utilities
+1        2010   9  37.5                             Capital Goods
+0        1010   2   8.3                                    Energy
+2        2030   1   4.2                            Transportation
+3        2510   1   4.2                  Automobiles & Components
+4        4530   1   4.2  Semiconductors & Semiconductor Equipment
+
+
+####### KMeans Cluster 21: ['natural_gas', 'pipeline', 'water', 'gas', 'gathering'] ########
+
+   gicsIndGrp   n   pct         indGrp
+0        1010  19  70.4         Energy
+2        5510   6  22.2      Utilities
+1        2010   2   7.4  Capital Goods
+
+
+####### KMeans Cluster 22: ['study', 'patient', 'anavexnnnn', 'treatment', 'phase'] ########
+
+   gicsIndGrp  n    pct                                          indGrp
+0        3520  4  100.0  Pharmaceuticals, Biotechnology & Life Sciences
+
+
+####### KMeans Cluster 23: ['boat', 'yacht', 'marina', 'marine', 'recreational'] ########
+
+   gicsIndGrp  n    pct     indGrp
+0        2550  1  100.0  Retailing
+
+=== Cell 12 Source ===
+pickle.dump( d2v, open( "d2v_model.p", "wb" ) )
+pickle.dump( km_model, open( "d2v_kmeans_model.p", "wb" ) )
+pickle.dump( km_model2, open( "d2v_kmeans_model2.p", "wb" ) )
+
+print("Pickle dumped")
+
+
+=== Cell 12 Output ===
+Pickle dumped
+

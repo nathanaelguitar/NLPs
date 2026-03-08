@@ -53,6 +53,21 @@ class _Doc2VecCompat:
         return getattr(self._model, name)
 
 
+class _KeyedVectorsCompat:
+    def __init__(self, kv):
+        self._kv = kv
+
+    @property
+    def index2entity(self):
+        return getattr(self._kv, "index_to_key", [])
+
+    def __getitem__(self, key):
+        return self._kv[key]
+
+    def __getattr__(self, name):
+        return getattr(self._kv, name)
+
+
 def _normalize_keyed_vectors(kv, keys, norms_attr):
     if kv is None:
         return None
@@ -95,6 +110,53 @@ def getDescriptions():
     longD['gicsIndGrp'] = (longD['gicsInd'] / 100).astype(int)
     
     return longD
+
+
+def getlongD():
+    """
+    Backward-compatible alias used by the course notebooks.
+
+    Returns:
+        Prepared company descriptions DataFrame.
+    """
+    return getDescriptions()
+
+
+def getindGrpNames():
+    """
+    Return the fixed mapping of GICS industry group codes to names.
+
+    This is kept as a compatibility helper for notebooks that expect the
+    original course-provided Base API.
+    """
+    indGrpNames = pd.DataFrame([
+        [1010, 'Energy'],
+        [1510, 'Materials'],
+        [2010, 'Capital Goods'],
+        [2020, 'Commercial & Professional Services'],
+        [2030, 'Transportation'],
+        [2510, 'Automobiles & Components'],
+        [2520, 'Consumer Durables & Apparel'],
+        [2530, 'Consumer Services'],
+        [2550, 'Retailing'],
+        [3010, 'Food & Staples Retailing'],
+        [3020, 'Food, Beverage & Tobacco'],
+        [3030, 'Household & Personal Products'],
+        [3510, 'Health Care Equipment & Services'],
+        [3520, 'Pharmaceuticals, Biotechnology & Life Sciences'],
+        [4010, 'Banks'],
+        [4020, 'Diversified Financials'],
+        [4030, 'Insurance'],
+        [4510, 'Software & Services'],
+        [4520, 'Technology Hardware & Equipment'],
+        [4530, 'Semiconductors & Semiconductor Equipment'],
+        [5010, 'Telecommunication Services'],
+        [5020, 'Media & Entertainment'],
+        [5510, 'Utilities'],
+        [6010, 'Real Estate']
+    ], columns=['gicsIndGrp', 'indGrp'])
+
+    return indGrpNames
 
 
 def getEmbeddings():
@@ -314,7 +376,7 @@ def getd2v():
             "vectors_docs_norm",
         )
         model.wv = wordvecs
-        _DOC2VEC_CACHE = _Doc2VecCompat(model, docvecs)
+        _DOC2VEC_CACHE = _Doc2VecCompat(model, _KeyedVectorsCompat(docvecs))
 
     return _DOC2VEC_CACHE
 
