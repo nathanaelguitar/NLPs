@@ -3,3 +3,13 @@ __pycache__/
 *.py[cod]
 .DS_Store
 .ipynb_checkpoints/
+
+# Answer and discussion files
+*_answers.md
+*_discussion.md
+ASSIGNMENT_ANSWERS_STRUCTURED.txt
+
+# Secrets and credentials
+.env
+*.pem
+*.key
