@@ -7,3 +7,7 @@ numpy
 scipy
 pandas
 scikit-learn
+# prediction markets
+requests
+cryptography
+python-dotenv
