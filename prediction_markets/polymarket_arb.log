@@ -1,0 +1,10 @@
+2026-04-15 19:37:02,343  INFO      poly.arb.engine  Executing arb | size_per_leg=50.0000 USDC | ARB SIGNAL | YES ask=0.4400  NO ask=0.4400  combined=0.8800  payout=0.9800  gas=0.0400  net_profit=0.0600 (6.818%)
+2026-04-15 19:37:02,351  INFO      poly.arb.engine  [DRY RUN] MARKET BUY  token=yes_toke…  size_usdc=50.0000  label=YES
+2026-04-15 19:37:02,352  INFO      poly.arb.engine  [DRY RUN] MARKET BUY  token=no_token…  size_usdc=50.0000  label=NO
+2026-04-15 19:37:02,353  INFO      poly.arb.engine  Arb executed successfully | net_profit_pct=6.818%
+2026-04-15 19:37:02,365  INFO      poly.arb.engine  Executing arb | size_per_leg=75.0000 USDC | ARB SIGNAL | YES ask=0.4400  NO ask=0.4400  combined=0.8800  payout=0.9800  gas=0.0400  net_profit=0.0600 (6.818%)
+2026-04-15 19:37:02,367  INFO      poly.arb.engine  [DRY RUN] MARKET BUY  token=yes_toke…  size_usdc=75.0000  label=YES
+2026-04-15 19:37:02,367  INFO      poly.arb.engine  [DRY RUN] MARKET BUY  token=no_token…  size_usdc=75.0000  label=NO
+2026-04-15 19:37:02,368  INFO      poly.arb.engine  Arb executed successfully | net_profit_pct=6.818%
+2026-04-15 19:37:02,374  INFO      poly.arb.engine  [DRY RUN] MARKET BUY  token=tok_abc1…  size_usdc=10.0000  label=
+2026-04-15 19:37:02,391  INFO      poly.arb.engine  [DRY RUN] MARKET BUY  token=tok_abc1…  size_usdc=50.0000  label=TEST

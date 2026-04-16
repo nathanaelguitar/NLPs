@@ -11,3 +11,6 @@ scikit-learn
 requests
 cryptography
 python-dotenv
+# polymarket arbitrage bot
+py-clob-client>=0.7.0
+websockets>=12.0
